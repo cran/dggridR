@@ -10,6 +10,7 @@
 #define DGRFNETWORK_H
 
 #include <vector>
+#include <cstdint>
 
 #include "DgUtil.h"
 
@@ -31,7 +32,7 @@ class DgRFNetwork {
 
      ~DgRFNetwork (void);
 
-      unsigned long long int size (void) const { return frames_.size(); }
+      std::uint64_t size (void) const { return frames_.size(); }
 
       bool existsConverter (const DgRFBase& fromFrame,
                             const DgRFBase& toFrame) const;

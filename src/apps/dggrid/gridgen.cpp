@@ -11,6 +11,7 @@
 #include <fstream>
 #include <set>
 #include <cstdlib>
+#include <cstdint>
 
 using namespace std;
 
@@ -76,7 +77,7 @@ GridGenParam::GridGenParam (DgParamList& plist)
       util::ssplit(regFileStr, regionFiles);
 
       getParamValue(plist, "geodetic_densify", geoDens, false);
-      geoDens *= M_PI / 180.0;
+      geoDens *= dgM_PI / 180.0;
 
       getParamValue(plist, "densification", nDensify, false);
       //nudge = 0.00000001;
@@ -766,7 +767,7 @@ void outputCellAdd2D (GridGenParam& dp, const DgIDGG& dgg, const DgLocation& add
 {
    // create the various output forms
 
-   unsigned long long int sn = dgg.bndRF().seqNum(add2D);
+   std::uint64_t sn = dgg.bndRF().seqNum(add2D);
    string *label;
    if (dp.useEnumLbl)
       label = new string(dgg::util::to_string(dp.nCellsAccepted));
@@ -858,24 +859,16 @@ void genGrid (GridGenParam& dp)
       dp.nCellsAccepted = 0;
       dp.nCellsTested = 0;
 
-      const int maxLine = 1000;
-      char buff[maxLine];
-
       std::ifstream fin(dp.regionFiles[0].c_str());
-      unsigned long int seqnum;
       set<unsigned long int> seqnums; //To ensure each cell is printed once
-      while(1){
+      unsigned long int sNum;
+      while(fin>>sNum){
         dp.nCellsTested++;
-
-        fin.getline(buff, maxLine);
-        if (fin.eof()) break;
-
-        unsigned long int sNum;
-        if (sscanf(buff, "%lu", &sNum) != 1)
-          ::report("doTransform(): invalid SEQNUM " + string(buff), DgBase::Fatal);
-
         seqnums.insert(sNum);
       }
+
+      if (fin.fail() && !fin.eof())
+        throw std::runtime_error("doTransform(): invalid SEQNUM found.");
 
       for(set<unsigned long int>::iterator i=seqnums.begin();i!=seqnums.end();i++){
         dp.nCellsAccepted++;

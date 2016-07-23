@@ -7,6 +7,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <iostream>
+#include <cstdint>
 
 using namespace std;
 
@@ -84,7 +85,7 @@ int main (int argc, char* argv[])
    //// build and load the parameter list ////
 
    cout << "** executing DGGRID version " << DGGRID_VERSION << " **\n";
-   cout << "type sizes: big int: " << sizeof(long long int) * 8 << " bits / ";
+   cout << "type sizes: big int: " << sizeof(std::int64_t) * 8 << " bits / ";
    cout << "big double: " << sizeof(long double) * 8 << " bits\n";
 
    cout << "\n** loading meta file " << metaFileName << "..." << endl;

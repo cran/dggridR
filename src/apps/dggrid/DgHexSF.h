@@ -11,6 +11,7 @@
 
 #include <string>
 #include <iostream>
+#include <cstdint>
 #include "DgIVec3D.h"
 
 using namespace std;
@@ -90,11 +91,11 @@ class DgHexSF {
       bool operator!= (const DgHexSF& h) const
             { return !operator==(h); }
 
-      unsigned long long int depthFirstTraversal (GridGenParam& dp, 
+      std::uint64_t depthFirstTraversal (GridGenParam& dp, 
                   const DgIDGG& dgg, const DgContCartRF& deg, int numAp4Res,
                   DgEvalData* ed = NULL);
 
-      unsigned long long int visitMe (GridGenParam& dp, const DgIDGG& dgg,
+      std::uint64_t visitMe (GridGenParam& dp, const DgIDGG& dgg,
                           const DgContCartRF& deg, DgEvalData* ed);
 
       DgHexSF downAp4 (void);

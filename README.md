@@ -35,10 +35,11 @@ Many details and examples are included in the vignette.
 Installation
 ------------
 
-dggridR is being reviewed for CRAN.
+dggridR is available from CRAN via:
 
-If you want it now, or prefer your code to be as up-to-date as possible, you can
-install it using:
+    install.packages('dggridR')
+
+If you want your code to be as up-to-date as possible, you can install it using:
 
     library(devtools) #Use `install.packages('devtools')` if need be
     install_github('r-barnes/dggridR', vignette=TRUE)
@@ -70,11 +71,11 @@ quakecounts   <- dgquakes %>% group_by(cell) %>% summarise(count=n())
 Show me more examples!
 ----------------------
 
-In R, if you type
+In R, typing
 
-    browseVignettes()
-    
-a browser window will open with many examples for many packages. Find `dggridR` in the list and you will find many more examples.
+    vignette('dggridR')
+
+will bring up many examples.
 
 
 But I want higher resolution grids than that

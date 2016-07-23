@@ -9,6 +9,8 @@
 #ifndef DGCONTCARTRF_H
 #define DGCONTCARTRF_H
 
+#include <cstdint>
+
 #include "DgRF.h"
 #include "DgConverter.h"
 #include "Dg2WayConverter.h"
@@ -51,8 +53,8 @@ class DgContCartRF : public DgRF<DgDVec2D, long double> {
       virtual long double dist2dbl (const long double& dist) const
                        { return dist; }
 
-      virtual unsigned long long int dist2int (const long double& dist) const
-                       { return static_cast<unsigned long long int>(dist); }
+      virtual std::uint64_t dist2int (const long double& dist) const
+                       { return static_cast<std::uint64_t>(dist); }
 
       virtual const DgDVec2D& undefAddress (void) const
                             { return DgDVec2D::undefDgDVec2D; }

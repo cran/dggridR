@@ -1,8 +1,5 @@
 #include <cmath>
 
-#ifndef lint
-//static const char SCCSID[]="@(#)hypot.c	4.4	93/06/12	GIE	REL";
-#endif
 /* hypot - sqrt(x * x + y * y)
 **
 **	Because this was omitted from the ANSI standards, this version
@@ -23,7 +20,7 @@
 
 
 long double
-hypot(long double x, long double y) {
+usgs_hypot(long double x, long double y) {
 	if ( x < 0.)
 		x = -x;
 	else if (x == 0.)
@@ -34,9 +31,9 @@ hypot(long double x, long double y) {
 		return (x);
 	if ( x < y ) {
 		x /= y;
-		return ( y * sqrt( 1. + x * x ) );
+		return ( y * std::sqrt( 1. + x * x ) );
 	} else {
 		y /= x;
-		return ( x * sqrt( 1. + y * y ) );
+		return ( x * std::sqrt( 1. + y * y ) );
 	}
 }

@@ -10,6 +10,7 @@
 #define DGDISCRFS_H
 
 #include <vector>
+#include <cstdint>
 
 #include "DgRF.h"
 #include "DgPolygon.h"
@@ -170,7 +171,7 @@ template<class A, class B, class DB> class DgDiscRFS
 
       // hokey temporary notion of distance
 
-      virtual long long int dist (const DgResAdd<A>& add1, 
+      virtual std::int64_t dist (const DgResAdd<A>& add1, 
                         const DgResAdd<A>& add2) const
            { return abs(add2.res() - add1.res()); }
 
@@ -408,14 +409,14 @@ template<class A, class B, class DB> class DgDiscRFS
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 template <class A, class B, class DB> class DgResAddConverter :
-    public DgConverter<DgResAdd<A>, long long int, A, long long int> {
+    public DgConverter<DgResAdd<A>, std::int64_t, A, std::int64_t> {
 
    public:
 
       DgResAddConverter (const DgDiscRFS<A, B, DB>& fromFrame,
                          const DgDiscRF<A, B, DB>& toFrame, int resIn)
-         : DgConverter<DgResAdd<A>, long long int, A, 
-                 long long int> (fromFrame, toFrame),
+         : DgConverter<DgResAdd<A>, std::int64_t, A, 
+                 std::int64_t> (fromFrame, toFrame),
            res_ (resIn), discRFS_ (fromFrame), discRF_ (toFrame)
            { 
 	      // JFW: second clause will never be > (int vs long):
@@ -434,7 +435,7 @@ template <class A, class B, class DB> class DgResAddConverter :
            }
 
       DgResAddConverter (const DgResAddConverter& con)
-         : DgConverter<DgResAdd<A>, long long int, A, long long int> (con) { }
+         : DgConverter<DgResAdd<A>, std::int64_t, A, std::int64_t> (con) { }
 
       int res (void) const { return res_; }
 
@@ -464,14 +465,14 @@ template <class A, class B, class DB> class DgResAddConverter :
 
 ////////////////////////////////////////////////////////////////////////////////
 template <class A, class B, class DB> class DgAddResConverter :
-    public DgConverter<A, long long int, DgResAdd<A>, long long int> {
+    public DgConverter<A, std::int64_t, DgResAdd<A>, std::int64_t> {
 
    public:
 
       DgAddResConverter (const DgDiscRF<A, B, DB>& fromFrame, 
                          const DgDiscRFS<A, B, DB>& toFrame, int resIn)
-         : DgConverter<A, long long int, DgResAdd<A>, 
-                       long long int> (fromFrame, toFrame), 
+         : DgConverter<A, std::int64_t, DgResAdd<A>, 
+                       std::int64_t> (fromFrame, toFrame), 
            res_ (resIn), discRFS_ (toFrame), discRF_ (fromFrame)
            { 
               // JFW: Note that int res() > long size() can never occur:
@@ -490,7 +491,7 @@ template <class A, class B, class DB> class DgAddResConverter :
            }
 
       DgAddResConverter (const DgAddResConverter& con)
-         : DgConverter<A, long long int, DgResAdd<A>, long long int> (con) { }
+         : DgConverter<A, std::int64_t, DgResAdd<A>, std::int64_t> (con) { }
 
       int res (void) const { return res_; }
 

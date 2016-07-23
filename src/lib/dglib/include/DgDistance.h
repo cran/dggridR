@@ -11,6 +11,7 @@
 
 #include <string>
 #include <iostream>
+#include <cstdint>
 
 #include "DgRFBase.h"
 
@@ -29,7 +30,7 @@ class DgDistanceBase {
 
       long double asDouble (void) const { return rf().toDouble(*this); }
 
-      unsigned long long int asInt (void) const { return rf().toInt(*this); }
+      std::uint64_t asInt (void) const { return rf().toInt(*this); }
 
    protected:
 

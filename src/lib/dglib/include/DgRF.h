@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <cstdint>
 
 #include "DgRFBase.h"
 #include "DgAddress.h"
@@ -56,7 +57,7 @@ template <class A, class D> class DgRF : public DgRFBase {
       virtual string toString (const DgDistanceBase& dist)   const;
       virtual long double toDouble (const DgDistanceBase& dist)   const;
       
-      virtual unsigned long long int toInt (const DgDistanceBase& dist) const;
+      virtual std::uint64_t toInt (const DgDistanceBase& dist) const;
 
       virtual string toAddressString (const DgLocation&  loc)    const;
       virtual string toAddressString (const DgLocVector& locVec) const;
@@ -82,7 +83,7 @@ template <class A, class D> class DgRF : public DgRFBase {
 
       virtual string dist2str (const D& dist) const = 0;
       virtual long double dist2dbl (const D& dist) const = 0;
-      virtual unsigned long long int dist2int (const D& dist) const = 0;
+      virtual std::uint64_t dist2int (const D& dist) const = 0;
 
       virtual const char* str2add (A* add, const char* str, char delimiter) 
                                                                       const = 0;

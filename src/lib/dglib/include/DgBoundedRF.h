@@ -9,6 +9,8 @@
 #ifndef DGBOUNDEDRF_H
 #define DGBOUNDEDRF_H
 
+#include <cstdint>
+
 #include "DgBoundedRFBase.h"
 #include "DgDiscRF.h"
 #include "DgPolygon.h"
@@ -38,10 +40,10 @@ template<class A, class B, class DB> class DgBoundedRF
       virtual DgLocation& decrementLocation (DgLocation& loc, 
                                              bool convert = true) const; 
 
-      virtual unsigned long long int seqNum (const DgLocation& loc,
+      virtual std::uint64_t seqNum (const DgLocation& loc,
                                         bool convert = true) const;
 
-      virtual DgLocation* locFromSeqNum (unsigned long long int sNum) const;
+      virtual DgLocation* locFromSeqNum (std::uint64_t sNum) const;
                                              
       const A& firstAdd (void) const { return firstAdd_; }
       const A& lastAdd  (void) const { return lastAdd_; }
@@ -52,13 +54,13 @@ template<class A, class B, class DB> class DgBoundedRF
       virtual const DgRF<B, DB>& backFrame (void) const
                      { return discRF().backFrame(); }
 
-      virtual string dist2str (const long long int& dist) const
+      virtual string dist2str (const std::int64_t& dist) const
                      { return discRF().dist2str(dist); }
 
-      virtual long double dist2dbl (const long long int& dist) const
+      virtual long double dist2dbl (const std::int64_t& dist) const
                      { return discRF().dist2dbl(dist); }
 
-      virtual unsigned long long int dist2int (const long long int& dist) const
+      virtual std::uint64_t dist2int (const std::int64_t& dist) const
                      { return discRF().dist2int(dist); }
 
       virtual void setPoint (const DgLocation& loc, DgLocation& point) const
@@ -115,9 +117,9 @@ template<class A, class B, class DB> class DgBoundedRF
       virtual A& incrementAddress (A& add) const = 0;
       virtual A& decrementAddress (A& add) const = 0;
 
-      virtual unsigned long long int seqNumAddress (const A& loc) const = 0;
+      virtual std::uint64_t seqNumAddress (const A& loc) const = 0;
 
-      virtual A addFromSeqNum (unsigned long long int sNum) const = 0;
+      virtual A addFromSeqNum (std::uint64_t sNum) const = 0;
 
       virtual bool lessThanAddress (const A& a1, const A& a2) const
                       { return (seqNumAddress(a1) < seqNumAddress(a2)); }

@@ -15,6 +15,9 @@
 #include <iomanip>
 #include <cstring>
 #include <cstdlib>
+#include <cstdint>
+#include <sstream>
+#include <stdexcept>
 
 #include "DgUtil.h"
 
@@ -89,7 +92,7 @@ inline string toLower (const string& strIn)
 namespace dgg { namespace util {
 
 ////////////////////////////////////////////////////////////////////////////////
-inline string addCommas (unsigned long long int num)
+inline string addCommas (std::uint64_t num)
 {
     std::stringstream ss;
     ss << num;
@@ -116,7 +119,7 @@ inline string addCommas (unsigned long long int num)
 ////////////////////////////////////////////////////////////////////////////////
 inline string addCommas (long double num, unsigned int precision)
 {
-   unsigned long long int intPart = num;
+   std::uint64_t intPart = num;
 
    string newS = addCommas(intPart);
 
@@ -174,7 +177,7 @@ inline void trim(char *line, const std::string& candidates = "\n\r")
 }
 
 template <class TargetT>
-inline static TargetT from_string(const std::string& source)
+inline TargetT from_string(const std::string& source)
 {
  TargetT result;
 
@@ -192,35 +195,31 @@ inline static TargetT from_string(const std::string& source)
 // JFW: clean up (gcc specific)
 template <>
 inline
-/* Test for GCC < 4.3.0 */
-#if !defined  __APPLE__ && !defined __clang__ && GCC_VERSION < 40300
-/* Template specializations are not allowed to have their own storage 
-   classes, but older g++ didn't know that. Without this, you'll get 
-   linker errors. */
-static 		
-#endif
-long long int from_string(const std::string& source)
+std::int64_t from_string(const std::string& source)
 {
- long long int n;
- sscanf(source.c_str(), "%lld", &n);
+ std::int64_t n;
+  std::istringstream convert(source);
+  convert>>n;
+  if(convert.fail())
+    throw std::runtime_error("from_string(): Conversion failed on: " + source);
  return n;
 }
 
 // JFW: clean up (gcc specific)
 template <>
 inline 
-#if !defined  __APPLE__ && !defined __clang__ && GCC_VERSION < 40300
-static 
-#endif
-unsigned long long int from_string(const std::string& source)
+std::uint64_t from_string(const std::string& source)
 { 
- unsigned long long int n;
- sscanf(source.c_str(), "%llu", &n);
+ std::uint64_t n;
+  std::istringstream convert(source);
+  convert>>n;
+  if(convert.fail())
+    throw std::runtime_error("from_string(): Conversion failed on: " + source);
  return n;
 }
 
 template <class SourceT>
-static std::string to_string(const SourceT& source)
+std::string to_string(const SourceT& source)
 {
  std::ostringstream os;
  os << source;

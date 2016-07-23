@@ -9,6 +9,8 @@
 #ifndef DGBOUNDEDHEXC2RF2D_H
 #define DGBOUNDEDHEXC2RF2D_H
 
+#include <cstdint>
+
 #include "DgBoundedRF2D.h"
 #include "DgIVec2D.h"
 
@@ -30,9 +32,9 @@ class DgBoundedHexC2RF2D : public DgBoundedRF2D {
                    add.j() >= lowerLeft().j() && add.j() <= upperRight().j() &&
                    !((add.i() + add.j()) % 3); }
 
-      virtual unsigned long long int seqNumAddress (const DgIVec2D& add) const;
+      virtual std::uint64_t seqNumAddress (const DgIVec2D& add) const;
 
-      virtual DgIVec2D addFromSeqNum (unsigned long long int sNum) const;
+      virtual DgIVec2D addFromSeqNum (std::uint64_t sNum) const;
 };
 
 ////////////////////////////////////////////////////////////////////////////////

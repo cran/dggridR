@@ -7,8 +7,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmath>
-#include <climits>
-#include <cfloat>
+#include <limits>
+#include <cstdint>
 
 #include "DgUtil.h"
 #include "DgIDGG.h"
@@ -22,9 +22,9 @@
 #include "DgProjFuller.h"
 
 const DgQ2DICoord DgQ2DICoord::undefDgQ2DICoord(-1, 
-                                     DgIVec2D(LLONG_MAX, LLONG_MAX));
+                                     DgIVec2D(std::numeric_limits<std::int64_t>::max(), std::numeric_limits<std::int64_t>::max()));
 const DgQ2DDCoord DgQ2DDCoord::undefDgQ2DDCoord(-1, 
-                                     DgDVec2D(LDBL_MAX, LDBL_MAX));
+                                     DgDVec2D(std::numeric_limits<long double>::max(), std::numeric_limits<long double>::max()));
 
 ////////////////////////////////////////////////////////////////////////////////
 DgVertTriVals DgVertex2DDRF::vertTable_[12][6] = {  
@@ -346,8 +346,8 @@ DgIDGG::str2add (DgQ2DICoord* add, const char* str, char delimiter) const
 
 ////////////////////////////////////////////////////////////////////////////////
 DgQ2DDtoIConverter::DgQ2DDtoIConverter (
-   const DgRF<DgQ2DDCoord, long double>& from, const DgRF<DgQ2DICoord, long long int>& to)
-  : DgConverter<DgQ2DDCoord, long double, DgQ2DICoord, long long int>(from, to),
+   const DgRF<DgQ2DDCoord, long double>& from, const DgRF<DgQ2DICoord, std::int64_t>& to)
+  : DgConverter<DgQ2DDCoord, long double, DgQ2DICoord, std::int64_t>(from, to),
     pIDGG_ (0) 
 { 
    pIDGG_ = dynamic_cast<const DgIDGG*>(&toFrame());
@@ -395,8 +395,8 @@ cout << " ---> " << *loc << endl;
       delete loc;
    }
 
-   long long int edgeI = IDGG().maxI() + 1;
-   long long int edgeJ = IDGG().maxJ() + 1;
+   std::int64_t edgeI = IDGG().maxI() + 1;
+   std::int64_t edgeJ = IDGG().maxJ() + 1;
    if (coord.i() > edgeI || coord.j() > edgeJ) // maybe round-off error?
    {
       DgDVec2D tmp(addIn.coord());
@@ -471,9 +471,9 @@ cout << " ---> " << *loc << endl;
 } // DgQ2DICoord DgQ2DDtoIConverter::convertTypedAddress 
 
 ////////////////////////////////////////////////////////////////////////////////
-DgQ2DItoDConverter::DgQ2DItoDConverter (const DgRF<DgQ2DICoord, long long int>& from,
+DgQ2DItoDConverter::DgQ2DItoDConverter (const DgRF<DgQ2DICoord, std::int64_t>& from,
                                         const DgRF<DgQ2DDCoord, long double>& to)
-        : DgConverter<DgQ2DICoord, long long int, DgQ2DDCoord, long double> (from, to),
+        : DgConverter<DgQ2DICoord, std::int64_t, DgQ2DDCoord, long double> (from, to),
           pIDGG_ (NULL)
 { 
    pIDGG_ = dynamic_cast<const DgIDGG*>(&fromFrame());
@@ -503,9 +503,9 @@ DgQ2DItoDConverter::convertTypedAddress (const DgQ2DICoord& addIn) const
 
 ////////////////////////////////////////////////////////////////////////////////
 DgQ2DItoInterleaveConverter::DgQ2DItoInterleaveConverter 
-                (const DgRF<DgQ2DICoord, long long int>& from,
-                 const DgRF<DgInterleaveCoord, long long int>& to)
-        : DgConverter<DgQ2DICoord, long long int, DgInterleaveCoord, long long int> (from, to),
+                (const DgRF<DgQ2DICoord, std::int64_t>& from,
+                 const DgRF<DgInterleaveCoord, std::int64_t>& to)
+        : DgConverter<DgQ2DICoord, std::int64_t, DgInterleaveCoord, std::int64_t> (from, to),
           pIDGG_ (NULL)
 { 
    pIDGG_ = dynamic_cast<const DgIDGG*>(&fromFrame());
@@ -834,13 +834,13 @@ DgIDGG::initialize (void)
          if (aperture() == 4)
          {
             isClassI_ = true;
-            maxD_ = (long long int) pow(2.0L, res()) - 1;
+            maxD_ = (std::int64_t) pow(2.0L, res()) - 1;
          }
          else // aperture 3
          {
             isClassI_ = !(res() % 2);
             if (!isClassI()) adjRes_ = res() + 1;
-            maxD_ = (long long int) pow(3.0L, (adjRes() / 2)) - 1;
+            maxD_ = (std::int64_t) pow(3.0L, (adjRes() / 2)) - 1;
          }
       }
       else // mixed43
@@ -848,14 +848,14 @@ DgIDGG::initialize (void)
          if (res() <= numAp4())
          {
             isClassI_ = true;
-            maxD_ = (long long int) pow(2.0L, res()) - 1;
+            maxD_ = (std::int64_t) pow(2.0L, res()) - 1;
          }
          else
          {
             isClassI_ = !((res() - numAp4()) % 2);
             if (!isClassI()) adjRes_ = res() + 1;
 
-            maxD_ = (long long int) (pow(2.0L, numAp4()) *
+            maxD_ = (std::int64_t) (pow(2.0L, numAp4()) *
                       pow(3.0L, ((adjRes() - numAp4()) / 2))) - 1;
          }
          // cout << "MAXD: " << maxD_ << endl;
@@ -868,7 +868,7 @@ DgIDGG::initialize (void)
    }
    else
    {
-      maxD_ = (long long int) pow((long double) radix(), res()) - 1;
+      maxD_ = (std::int64_t) pow((long double) radix(), res()) - 1;
       maxI_ = maxD();
       maxJ_ = maxD();
       mag_ = maxD() + 1;
@@ -1142,7 +1142,7 @@ DgIDGG::initialize (void)
       gridStats_.setCellAreaKM(DgGeoSphRF::totalAreaKM() / gridStats_.nCells());
 
    gridStats_.setCLS(2.0L * 2.0L * DgGeoSphRF::earthRadiusKM() * 
-                     asin(sqrt(gridStats_.cellAreaKM() / M_PI) / 
+                     asin(sqrt(gridStats_.cellAreaKM() / dgM_PI) / 
                      (2.0L * DgGeoSphRF::earthRadiusKM())));
 
 } // DgIDGG::initialize

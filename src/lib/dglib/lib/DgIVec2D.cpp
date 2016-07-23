@@ -6,14 +6,15 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <climits>
+#include <limits>
+#include <cstdint>
 
 #include "DgBase.h"
 #include "DgIVec2D.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 
-const DgIVec2D& DgIVec2D::undefDgIVec2D = DgIVec2D(INT_MAX, INT_MAX);
+const DgIVec2D& DgIVec2D::undefDgIVec2D = DgIVec2D(std::numeric_limits<int>::max(), std::numeric_limits<int>::max());
 
 ////////////////////////////////////////////////////////////////////////////////
 const char*
@@ -29,16 +30,16 @@ DgIVec2D::fromString (const char* str, char delimiter)
    // Get i and j:
    char* tok;
 
-   long long int	iIn(0),
+   std::int64_t	iIn(0),
 	   		jIn(0);
 
    try
     {
    	tok = strtok(tmpStr, delimStr);
-   	iIn = dgg::util::from_string<long long int>(tok);
+   	iIn = dgg::util::from_string<std::int64_t>(tok);
 	
    	tok = strtok(NULL, delimStr);
-   	jIn = dgg::util::from_string<long long int>(tok);
+   	jIn = dgg::util::from_string<std::int64_t>(tok);
     }  
    catch(...)
     {
@@ -49,7 +50,7 @@ DgIVec2D::fromString (const char* str, char delimiter)
    setI(iIn);
    setJ(jIn);
 
-   unsigned long long int offset = (tok - tmpStr) + strlen(tok) + 1;
+   std::uint64_t offset = (tok - tmpStr) + strlen(tok) + 1;
    if (offset >= strlen(str)) 
     return 0;
 

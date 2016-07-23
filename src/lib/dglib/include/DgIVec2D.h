@@ -11,6 +11,7 @@
 
 #include <cmath>
 #include <string>
+#include <cstdint>
 
 #include "DgUtil.h"
 #include "DgConstants.h"
@@ -30,7 +31,7 @@ class DgIVec2D {
 
       static const DgIVec2D& undefDgIVec2D;
 
-      DgIVec2D (long long int i = 0, long long int j = 0) 
+      DgIVec2D (std::int64_t i = 0, std::int64_t j = 0) 
        : i_(i), j_(j)
       {}
 
@@ -43,14 +44,14 @@ class DgIVec2D {
          j_ (dgg::util::lrint(pt.y())) 
       {}
 
-      void setI (long long int i) { i_ = i; }
-      void setJ (long long int j) { j_ = j; }
+      void setI (std::int64_t i) { i_ = i; }
+      void setJ (std::int64_t j) { j_ = j; }
 
       long double distance (const DgIVec2D& pt) const
               { return (pt - *this).magnitude(); }
 
-      long long int i (void) const { return i_; }
-      long long int j (void) const { return j_; }
+      std::int64_t i (void) const { return i_; }
+      std::int64_t j (void) const { return j_; }
       
       long double magnitude (void) const 
               { return sqrt((long double) (i_ * i_ + j_ * j_)); }
@@ -94,8 +95,8 @@ class DgIVec2D {
 
    private:
 
-      long long int i_;
-      long long int j_;
+      std::int64_t i_;
+      std::int64_t j_;
 
 };
 
@@ -109,8 +110,8 @@ DgIVec2D::scale (long double xScaleFactor, long double yScaleFactor)
 //
 ////////////////////////////////////////////////////////////////////////////////
 {
-   i_ = (long long int) dgg::util::lrint(i_ * xScaleFactor);
-   j_ = (long long int) dgg::util::lrint(j_ * yScaleFactor);
+   i_ = (std::int64_t) dgg::util::lrint(i_ * xScaleFactor);
+   j_ = (std::int64_t) dgg::util::lrint(j_ * yScaleFactor);
 
    return *this;
 
@@ -126,14 +127,14 @@ DgIVec2D::rotate (long double degrees)
 //
 ////////////////////////////////////////////////////////////////////////////////
 {
-   long double rotAng = degrees * M_PI_180;
+   long double rotAng = degrees * dgM_PI_180;
    long double cosAng = cos(rotAng);
    long double sinAng = sin(rotAng);
-   long long int i = i_;
-   long long int j = j_;
+   std::int64_t i = i_;
+   std::int64_t j = j_;
 
-   i_ = (long long int) dgg::util::lrint(i * cosAng - j * sinAng);
-   j_ = (long long int) dgg::util::lrint(i * sinAng + j * cosAng);
+   i_ = (std::int64_t) dgg::util::lrint(i * cosAng - j * sinAng);
+   j_ = (std::int64_t) dgg::util::lrint(i * sinAng + j * cosAng);
 
    return *this;
 

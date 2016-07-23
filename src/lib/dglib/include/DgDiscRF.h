@@ -9,24 +9,26 @@
 #ifndef DGDISCRF_H
 #define DGDISCRF_H
 
+#include <cstdint>
+
 #include "DgRF.h"
 #include "DgPolygon.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 template<class A, class B, class DB> 
-class DgDiscRF : public DgRF<A, long long int> {
+class DgDiscRF : public DgRF<A, std::int64_t> {
 
    public:
 
-      class DgQuantConverter : public DgConverter<B, DB, A, long long int> {
+      class DgQuantConverter : public DgConverter<B, DB, A, std::int64_t> {
 
          public:
 
             DgQuantConverter (const DgRF<B, DB>& fromFrame, 
                               const DgDiscRF<A, B, DB>& toFrame)
-               : DgConverter<B, DB, A, long long int> 
+               : DgConverter<B, DB, A, std::int64_t> 
                        (static_cast< const DgRF<B, DB>& >(fromFrame), 
-                        static_cast< const DgRF<A, long long int>& >(toFrame)) { }
+                        static_cast< const DgRF<A, std::int64_t>& >(toFrame)) { }
 
             virtual A convertTypedAddress (const B& addIn) const
               { return 
@@ -36,13 +38,13 @@ class DgDiscRF : public DgRF<A, long long int> {
 
       };
 
-      class DgInvQuantConverter : public DgConverter<A, long long int, B, DB> {
+      class DgInvQuantConverter : public DgConverter<A, std::int64_t, B, DB> {
 
          public:
 
             DgInvQuantConverter (const DgDiscRF<A, B, DB>& fromFrame,
                                  const DgRF<B, DB>& toFrame)
-               : DgConverter<A, long long int, B, DB> (fromFrame, toFrame) { }
+               : DgConverter<A, std::int64_t, B, DB> (fromFrame, toFrame) { }
 
             virtual B convertTypedAddress (const A& addIn) const
              { return 
@@ -55,12 +57,12 @@ class DgDiscRF : public DgRF<A, long long int> {
       DgDiscRF (DgRFNetwork& networkIn, const DgRF<B, DB>& backFrameIn,
                 const string& nameIn = "Disc", long double eIn = 1.0L,
                 long double rIn = 1.0L, long double cIn = 1.0L, long double areaIn = 1.0L)
-        : DgRF<A, long long int> (networkIn, nameIn), backFrame_ (&backFrameIn),
+        : DgRF<A, std::int64_t> (networkIn, nameIn), backFrame_ (&backFrameIn),
           e_ (eIn), r_ (rIn), c_ (cIn), area_ (areaIn)
         { new DgQuantConverter(backFrame(), *this);
           new DgInvQuantConverter(*this, backFrame()); }
 
-      DgDiscRF (const DgDiscRF<A, B, DB>& rf) : DgRF<A, long long int> (rf), 
+      DgDiscRF (const DgDiscRF<A, B, DB>& rf) : DgRF<A, std::int64_t> (rf), 
           backFrame_ (&rf.backFrame()), e_ (rf.e()), r_ (rf.r()),
           c_ (rf.c()), area_ (rf.area())
         { new DgQuantConverter(backFrame(), *this);
@@ -71,7 +73,7 @@ class DgDiscRF : public DgRF<A, long long int> {
           { 
              if (&rf != this)
              {
-                DgRF<A, long long int>::operator=(rf); 
+                DgRF<A, std::int64_t>::operator=(rf); 
                 e_ = rf.e();
                 r_ = rf.r();
                 c_ = rf.c();
@@ -99,10 +101,10 @@ class DgDiscRF : public DgRF<A, long long int> {
 
       // misc methods
       
-      virtual string dist2str (const long long int& dist) const { return dgg::util::to_string(dist); }
-      virtual long double dist2dbl (const long long int& dist) const { return (long double) dist; }
-      virtual unsigned long long int dist2int (const long long int& dist) const 
-                         { return static_cast<unsigned long long int>(dist); }
+      virtual string dist2str (const std::int64_t& dist) const { return dgg::util::to_string(dist); }
+      virtual long double dist2dbl (const std::int64_t& dist) const { return (long double) dist; }
+      virtual std::uint64_t dist2int (const std::int64_t& dist) const 
+                         { return static_cast<std::uint64_t>(dist); }
 
       virtual void setPoint (const DgLocation& loc, DgLocation& point) const;
 
@@ -167,7 +169,7 @@ class DgDiscRF : public DgRF<A, long long int> {
       virtual string add2str (const A& add) const = 0;
       virtual string add2str (const A& add, char delimiter) const = 0;
 
-      virtual long long int dist (const A& add1, const A& add2) const = 0;
+      virtual std::int64_t dist (const A& add1, const A& add2) const = 0;
 
       virtual const char* str2add (A* add, const char* str, char delimiter) 
                                                                       const = 0;

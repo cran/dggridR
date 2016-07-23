@@ -9,6 +9,8 @@
 #ifndef DGBOUNDEDRFBASE_H
 #define DGBOUNDEDRFBASE_H
 
+#include <cstdint>
+
 #include "DgDiscRF.h"
 
 class DgLocation;
@@ -38,29 +40,29 @@ template<class B, class DB> class DgBoundedRFBase {
       const DgLocation& last  (void) const { return last_; }
       const DgLocation& end   (void) const { return end_; }
 
-      unsigned long long int size (void) const { return size_; }
+      std::uint64_t size (void) const { return size_; }
       bool validSize (void) const { return validSize_; }
 
       bool zeroBased (void) const { return zeroBased_; }
       void setZeroBased (bool zBasedIn) { zeroBased_ = zBasedIn; }
 
-      virtual unsigned long long int seqNum (const DgLocation& loc,
+      virtual std::uint64_t seqNum (const DgLocation& loc,
                                         bool convert = true) const = 0; 
 
       virtual bool lessThan (const DgLocation& loc1, 
                      const DgLocation& loc2, bool convert = true) const
                  { return (seqNum(loc1, convert) < seqNum(loc2, convert)); }
 
-      virtual DgLocation* locFromSeqNum (unsigned long long int sNum) const = 0;
+      virtual DgLocation* locFromSeqNum (std::uint64_t sNum) const = 0;
       
       // provide a generic interface to the discrete grid functionality
 
       virtual const DgRF<B, DB>& backFrame (void) const = 0;
       
-      virtual string dist2str (const long long int& dist) const = 0;
-      virtual long double dist2dbl (const long long int& dist) const = 0;
+      virtual string dist2str (const std::int64_t& dist) const = 0;
+      virtual long double dist2dbl (const std::int64_t& dist) const = 0;
 
-      virtual unsigned long long int dist2int (const long long int& dist) const = 0;
+      virtual std::uint64_t dist2int (const std::int64_t& dist) const = 0;
 
       virtual void setPoint (const DgLocation& loc, DgLocation& point) 
                                                                      const = 0;
@@ -92,7 +94,7 @@ template<class B, class DB> class DgBoundedRFBase {
 	   first_ (firstIn), last_ (lastIn), end_ (endIn),
 	   zeroBased_ (zBasedIn) {}
          
-      unsigned long long int size_;
+      std::uint64_t size_;
       bool validSize_;
 
    private:

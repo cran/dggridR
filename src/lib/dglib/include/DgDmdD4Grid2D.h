@@ -10,6 +10,7 @@
 #define DGDMDD4GRID2D_H
 
 #include <cmath>
+#include <cstdint>
 
 #include "DgDiscRF2D.h"
 #include "DgDVec2D.h"
@@ -35,7 +36,7 @@ class DgDmdD4Grid2D : public DgDiscRF2D {
       DgDmdD4Grid2D& operator= (const DgDmdD4Grid2D& grd)
            { DgDiscRF2D::operator=(grd); return *this; }
 
-      virtual long long int dist (const DgIVec2D& add1, const DgIVec2D& add2) const
+      virtual std::int64_t dist (const DgIVec2D& add1, const DgIVec2D& add2) const
            { return abs(add2.i() - add1.i()) + abs(add2.j() - add1.j()); }
 
       static long double yOff (void) { return yOff_; }

@@ -18,35 +18,9 @@
                               + __GNUC_MINOR__ * 100 \
                               + __GNUC_PATCHLEVEL__)
 
-#if !defined __clang__ && DGGS_GCC_VERSION >= 40200
-
-#include <tr1/cmath>
-#include <tr1/cfloat>
-#include <tr1/cstdint>
-#include <tr1/climits>
-
-#else	
-
 #include <cmath>
-#include <cfloat>
 #include <cstdint>
-#include <climits>
-
-// hard-code the TR1 limits (these are GPL)
-
-#ifndef LLONG_MIN
-#define LLONG_MIN -__LONG_LONG_MAX__ - 1
-#endif
-
-#ifndef LLONG_MAX
-#define LLONG_MAX __LONG_LONG_MAX__
-#endif
-
-#ifndef ULLONG_MAX
-#define ULLONG_MAX __LONG_LONG_MAX__ * 2ULL + 1
-#endif
-
-#endif
+#include <limits>// hard-code the TR1 limits (these are GPL)
 
 namespace dgg { namespace util {
 
@@ -83,11 +57,7 @@ void release(std::vector<T>& v)
 // Round a long double into a long:
 inline long lrint(const long double& x)
 {
-#if DGGS_GCC_VERSION >= 40401		// try the C++0x TR1 version:
- return std::tr1::lrintl(x);
-#else					// try the C99 version:
- return llrintl(x);
-#endif
+ return std::llrint(x);
 }
 
 }} // namespace dgg::util

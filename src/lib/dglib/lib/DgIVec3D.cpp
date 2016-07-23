@@ -6,14 +6,15 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <climits>
+#include <limits>
+#include <cstdint>
 
 #include "DgBase.h"
 #include "DgIVec3D.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 
-const DgIVec3D& DgIVec3D::undefDgIVec3D = DgIVec3D(INT_MAX, INT_MAX, INT_MAX);
+const DgIVec3D& DgIVec3D::undefDgIVec3D = DgIVec3D(std::numeric_limits<int>::max(), std::numeric_limits<int>::max(), std::numeric_limits<int>::max());
 
 ////////////////////////////////////////////////////////////////////////////////
 const char*
@@ -29,20 +30,20 @@ DgIVec3D::fromString (const char* str, char delimiter)
    // Get i, j, and k
    char* tok;
 
-   long long int	iIn(0),
+   std::int64_t	iIn(0),
 	   		jIn(0),
                         kIn(0);
 
    try
     {
    	tok = strtok(tmpStr, delimStr);
-   	iIn = dgg::util::from_string<long long int>(tok);
+   	iIn = dgg::util::from_string<std::int64_t>(tok);
 	
    	tok = strtok(NULL, delimStr);
-   	jIn = dgg::util::from_string<long long int>(tok);
+   	jIn = dgg::util::from_string<std::int64_t>(tok);
 
    	tok = strtok(NULL, delimStr);
-   	kIn = dgg::util::from_string<long long int>(tok);
+   	kIn = dgg::util::from_string<std::int64_t>(tok);
     }  
    catch(...)
     {
@@ -54,7 +55,7 @@ DgIVec3D::fromString (const char* str, char delimiter)
    setJ(jIn);
    setK(kIn);
 
-   unsigned long long int offset = (tok - tmpStr) + strlen(tok) + 1;
+   std::uint64_t offset = (tok - tmpStr) + strlen(tok) + 1;
    if (offset >= strlen(str)) 
     return 0;
 

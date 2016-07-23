@@ -9,8 +9,9 @@
 #ifndef DGELLIPSOIDRF_H
 #define DGELLIPSOIDRF_H
 
-#include <climits>
+#include <limits>
 #include <iostream>
+#include <cstdint>
 
 #include "DgConstants.h"
 #include "DgGeoDatumRF.h"
@@ -54,11 +55,11 @@ class DgGeoCoord : public DgDVec2D {
       DgGeoCoord (const DgGeoCoord& coord) { *this = coord; }
 
       DgGeoCoord (const DgDVec2D& coord, bool rads = true)
-        { if (rads) *this = coord; else *this = coord * M_PI_180; } 
+        { if (rads) *this = coord; else *this = coord * dgM_PI_180; } 
 
       DgGeoCoord (long double lon, long double lat, bool rads = true) 
         { if (rads) *this = DgDVec2D(lon, lat); 
-          else *this = DgDVec2D(lon * M_PI_180, lat * M_PI_180); }
+          else *this = DgDVec2D(lon * dgM_PI_180, lat * dgM_PI_180); }
 
       DgGeoCoord (const GeoCoord& coord)
            { *this = DgDVec2D(coord.lon, coord.lat); }
@@ -82,8 +83,8 @@ class DgGeoCoord : public DgDVec2D {
       void setLat (long double rads) { setY(rads); }
       void setLon (long double rads) { setX(rads); }
 
-      void setLatDeg (long double degs) { setY(degs * M_PI_180); }
-      void setLonDeg (long double degs) { setX(degs * M_PI_180); }
+      void setLatDeg (long double degs) { setY(degs * dgM_PI_180); }
+      void setLonDeg (long double degs) { setX(degs * dgM_PI_180); }
 
       void normalize (void)
            {
@@ -270,8 +271,8 @@ class DgEllipsoidRF : public DgGeoDatumRF<DgGeoCoord, long double> {
       virtual long double dist2dbl (const long double& dist) const
                        { return dist; }
 
-      virtual unsigned long long int dist2int (const long double& dist) const
-                       { return static_cast<unsigned long long int>(dist); }
+      virtual std::uint64_t dist2int (const long double& dist) const
+                       { return static_cast<std::uint64_t>(dist); }
 
    private:
 
@@ -322,8 +323,8 @@ operator<< (ostream& stream, const DgEllipsoidRF& ell)
 
 /**** macros ****/
 
-#define UNDEFVAL  LDBL_MAX
-#define UNDEFINT  INT_MAX
+#define UNDEFVAL  std::numeric_limits<long double>::max()
+#define UNDEFINT  std::numeric_limits<int>::max()
 
 #define PRECISION 0.0000000000005L /* precise 12 digits after dot  */
 
@@ -354,7 +355,7 @@ typedef struct Vec3D {
 
 typedef struct SphTri {
 
-   long long int code; 
+   std::int64_t code; 
    GeoCoord verts[3];  /* vertices in degrees */
    long double   edges[3];  /* edges opposite to verts in central angle degrees */
    long double   angles[3]; /* interior angles in degrees corresponding to verts */
@@ -366,8 +367,8 @@ typedef struct SphTri {
 
 typedef struct PlaneTri {
 
-   long long int code;
-   long long int direction; /* 0: up, 1: down */
+   std::int64_t code;
+   std::int64_t direction; /* 0: up, 1: down */
    Vec2D    points[3]; /* points in plane triangle in km */ 
    Vec2D    cenpoint;  /* central point of plane triangle in km */ 
  
@@ -375,7 +376,7 @@ typedef struct PlaneTri {
 
 typedef struct SCtri {
 
-  long long int code;
+  std::int64_t code;
   GeoCoord verts[3]; /* vertices in radius*/
   GeoCoord poles[3];  
   long double edges[3];

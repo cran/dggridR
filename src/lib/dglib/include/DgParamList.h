@@ -11,8 +11,8 @@
 
 #include <string>
 #include <vector>
-#include <cfloat>
-#include <climits>
+#include <limits>
+#include <cstdint>
 
 #include "DgBase.h"
 #include "DgUtil.h"
@@ -349,12 +349,12 @@ class DgIntParam : public DgBoundedParam<int> {
 
    public:
 
-     DgIntParam (const string& nameIn, int minIn = INT_MIN,
-                 int maxIn = INT_MAX)
+     DgIntParam (const string& nameIn, int minIn = std::numeric_limits<int>::min(),
+                 int maxIn = std::numeric_limits<int>::max())
           : DgBoundedParam<int> (nameIn, minIn, maxIn) { }
 
       DgIntParam (const string& nameIn, const int& valIn, 
-                  const int& minIn = INT_MIN, const int& maxIn = INT_MAX,
+                  const int& minIn = std::numeric_limits<int>::min(), const int& maxIn = std::numeric_limits<int>::max(),
                   bool validIn = true)
         : DgBoundedParam<int> (nameIn, valIn, minIn, maxIn, validIn) 
                 { 
@@ -387,20 +387,20 @@ class DgIntParam : public DgBoundedParam<int> {
 };
 
 ////////////////////////////////////////////////////////////////////////////////
-class DgLIntParam : public DgBoundedParam<long long int> {
+class DgLIntParam : public DgBoundedParam<std::int64_t> {
 
    public:
 
      DgLIntParam (const string& nameIn, 
-                  long long int minIn = LLONG_MIN,
-                  long long int maxIn = LLONG_MAX)
-          : DgBoundedParam<long long int> (nameIn, minIn, maxIn) { }
+                  std::int64_t minIn = std::numeric_limits<std::int64_t>::min(),
+                  std::int64_t maxIn = std::numeric_limits<std::int64_t>::max())
+          : DgBoundedParam<std::int64_t> (nameIn, minIn, maxIn) { }
 
-      DgLIntParam (const string& nameIn, const long long int& valIn, 
-                  const long long int& minIn = LLONG_MIN,
-		  const long long int& maxIn = LLONG_MAX,
+      DgLIntParam (const string& nameIn, const std::int64_t& valIn, 
+                  const std::int64_t& minIn = std::numeric_limits<std::int64_t>::min(),
+		  const std::int64_t& maxIn = std::numeric_limits<std::int64_t>::max(),
                   bool validIn = true)
-        : DgBoundedParam<long long int> (nameIn, valIn, minIn, maxIn, validIn) 
+        : DgBoundedParam<std::int64_t> (nameIn, valIn, minIn, maxIn, validIn) 
                 { 
                   if (!validate())
                   {
@@ -412,14 +412,14 @@ class DgLIntParam : public DgBoundedParam<long long int> {
                 }
 
       virtual string valToStr (void) const { return dgg::util::to_string(value_); }
-      virtual long long int strToVal (const string& strVal) const
+      virtual std::int64_t strToVal (const string& strVal) const
                 { 
-			return dgg::util::from_string<long long int>(strVal); 
+			return dgg::util::from_string<std::int64_t>(strVal); 
                 }
 
       virtual bool validate (void) 
                 { 
-                   DgBoundedParam<long long int>::validate();
+                   DgBoundedParam<std::int64_t>::validate();
                    if (!isValid())
                    {
                       setValidationErrMsg(string("value out of range ") +
@@ -435,12 +435,12 @@ class DgULIntParam : public DgBoundedParam<unsigned long int> {
    public:
 
      DgULIntParam (const string& nameIn, unsigned long int minIn = 0UL, 
-                 unsigned long int maxIn = ULONG_MAX) 
+                 unsigned long int maxIn = std::numeric_limits<unsigned long int>::max()) 
           : DgBoundedParam<unsigned long int> (nameIn, minIn, maxIn) { }
 
       DgULIntParam (const string& nameIn, const unsigned long int& valIn, 
                   const unsigned long int& minIn = 0UL, 
-                  const unsigned long int& maxIn = ULONG_MAX,
+                  const unsigned long int& maxIn = std::numeric_limits<unsigned long int>::max(),
                   bool validIn = true)
         : DgBoundedParam<unsigned long int> 
                           (nameIn, valIn, minIn, maxIn, validIn) 
@@ -471,19 +471,19 @@ class DgULIntParam : public DgBoundedParam<unsigned long int> {
 };
 
 ////////////////////////////////////////////////////////////////////////////////
-class DgUint64Param : public DgBoundedParam<unsigned long long int> {
+class DgUint64Param : public DgBoundedParam<std::uint64_t> {
 
    public:
 
-      DgUint64Param (const string& nameIn, unsigned long long int minIn = 0ULL, 
-                   unsigned long long int maxIn = ULLONG_MAX) 
-          : DgBoundedParam<unsigned long long int> (nameIn, minIn, maxIn) { }
+      DgUint64Param (const string& nameIn, std::uint64_t minIn = 0, 
+                   std::uint64_t maxIn = std::numeric_limits<std::uint64_t>::max()) 
+          : DgBoundedParam<std::uint64_t> (nameIn, minIn, maxIn) { }
 
-      DgUint64Param (const string& nameIn, const unsigned long long int& valIn, 
-                    const unsigned long long int& minIn = 0ULL, 
-                    const unsigned long long int& maxIn = ULLONG_MAX,
+      DgUint64Param (const string& nameIn, const std::uint64_t& valIn, 
+                    const std::uint64_t& minIn = 0, 
+                    const std::uint64_t& maxIn = std::numeric_limits<std::uint64_t>::max(),
                     bool validIn = true)
-        : DgBoundedParam<unsigned long long int> (nameIn, valIn, minIn, maxIn, validIn) 
+        : DgBoundedParam<std::uint64_t> (nameIn, valIn, minIn, maxIn, validIn) 
                 { 
                   if (!validate())
                   {
@@ -495,12 +495,12 @@ class DgUint64Param : public DgBoundedParam<unsigned long long int> {
                 }
 
       virtual string valToStr (void) const { return dgg::util::to_string(value_); }
-      virtual unsigned long long int strToVal (const string& strVal) const
-                      { return dgg::util::from_string<unsigned long long int>(strVal); }
+      virtual std::uint64_t strToVal (const string& strVal) const
+                      { return dgg::util::from_string<std::uint64_t>(strVal); }
 
       virtual bool validate (void) 
                 { 
-                   DgBoundedParam<unsigned long long int>::validate();
+                   DgBoundedParam<std::uint64_t>::validate();
                    if (!isValid())
                    {
                       setValidationErrMsg(string("value out of range ") +
@@ -515,13 +515,13 @@ class DgDoubleParam : public DgBoundedParam<long double> {
 
    public:
 
-      DgDoubleParam (const string& nameIn, long double minIn = LDBL_MIN, 
-                     long double maxIn = LDBL_MAX) 
+      DgDoubleParam (const string& nameIn, long double minIn = std::numeric_limits<long double>::min(), 
+                     long double maxIn = std::numeric_limits<long double>::max()) 
           : DgBoundedParam<long double> (nameIn, minIn, maxIn) { }
 
       DgDoubleParam (const string& nameIn, const long double& valIn, 
-                     const long double& minIn = LDBL_MIN, 
-                     const long double& maxIn = LDBL_MAX, bool validIn = true)
+                     const long double& minIn = std::numeric_limits<long double>::min(), 
+                     const long double& maxIn = std::numeric_limits<long double>::max(), bool validIn = true)
           : DgBoundedParam<long double> (nameIn, valIn, minIn, maxIn, validIn)
                 { 
                   if (!validate())
