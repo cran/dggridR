@@ -1,7 +1,7 @@
-882af7e2f08db0c2fc656748e7085780 *DESCRIPTION
+22034708c2211743b418a25af00eaf53 *DESCRIPTION
 528d93d4ca89f360d0c7bbde70e00e7c *LICENCE
 b73a41c35eed182b2c1da3621163544a *NAMESPACE
-9a512eb0b1de41af7739143f5bfe56bd *NEWS
+6e8dc769d966a4a5c429745d977dd706 *NEWS
 3fd1d5169842e754b62c40dba6c79f56 *R/dggridR.R
 3bedeccb303a293bbf6a44f885b2beb4 *README.md
 3a9112eca18dff75553886daa41f6093 *build/vignette.rds
@@ -115,7 +115,7 @@ f90fdcff6f3bc381f0374c5b62cd514f *src/lib/dglib/include/DgInShapefileAtt.h
 9b4649b3a52c03a9523c6dd83a1d9470 *src/lib/dglib/include/DgLabelLoc.h
 6113d2a67821fcb17b52c6b3a60187ae *src/lib/dglib/include/DgLocBase.h
 26633da4cb20a13d465d5a7afc376551 *src/lib/dglib/include/DgLocList.h
-1a8cc62d35fd05e744443327f22eb760 *src/lib/dglib/include/DgLocVector.h
+2f1488496d7fdc8b6f9390f1e6497105 *src/lib/dglib/include/DgLocVector.h
 519b5901dfcb3c6aff240c427661c855 *src/lib/dglib/include/DgLocation.h
 9f61c8c6893313895d8f46144f5a2794 *src/lib/dglib/include/DgOutAIGenFile.h
 6919b75eed8103e94ba6a8007b06cd1b *src/lib/dglib/include/DgOutGeoJSONFile.h
