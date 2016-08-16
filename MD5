@@ -1,15 +1,15 @@
-22034708c2211743b418a25af00eaf53 *DESCRIPTION
+c06979b6bd78ddffe5786555846c11e1 *DESCRIPTION
 528d93d4ca89f360d0c7bbde70e00e7c *LICENCE
 b73a41c35eed182b2c1da3621163544a *NAMESPACE
-6e8dc769d966a4a5c429745d977dd706 *NEWS
-3fd1d5169842e754b62c40dba6c79f56 *R/dggridR.R
+c436cde42eea3b68941f078b8ba52a99 *NEWS
+8bb5d2f6a161a0d993a31b63c25bc6d5 *R/dggridR.R
 3bedeccb303a293bbf6a44f885b2beb4 *README.md
 3a9112eca18dff75553886daa41f6093 *build/vignette.rds
 2ce94c25d7e04785df702d344453f293 *data/datalist
 7a5b26b69b97a3747f13a7fd41858a3f *data/dgquakes.rda
-291d86e6aac02fc4f2cbf98a1c895789 *inst/doc/dggridR.R
-422ac56ef5c91c0de6aa41bef0db88cb *inst/doc/dggridR.Rmd
-7a92ce7d650a5ce9d35a6752409d4088 *inst/doc/dggridR.html
+7bd1b875f0e1109ba6d0b75a439cd729 *inst/doc/dggridR.R
+c48c31d78ea43aab9c3ef6adde438cf2 *inst/doc/dggridR.Rmd
+a81b43f40c49599798f59cb41db8a4ba *inst/doc/dggridR.html
 e929b1d50b7116502e0a2edba694b3b6 *inst/doc/dggrid_v62_manual.pdf
 bfac92aacae81d1635254a5af9423545 *inst/doc/dggrid_v62_manual.pdf.asis
 09aaf0db111bb364a933777ac37379d6 *inst/extdata/README.md
@@ -24,7 +24,7 @@ beddcff5123a2877828254e7feca5920 *man/dg_exe_path.Rd
 9df050330037c2a0ac826598554a404a *man/dg_process_kml.Rd
 d93a1ca9d11334b07b0e73e53aefc7bb *man/dg_shpfname_south_africa.Rd
 7f43cd42ee282db8f103728ca3fe6dd4 *man/dgcellstogrid.Rd
-3802ecec4cf15524e30d50ddbf1e9221 *man/dgconstruct.Rd
+cfd9b30cf71bd54c3071bf84e7e59932 *man/dgconstruct.Rd
 bff07c41d4422eadf7faf065261a7700 *man/dgearthgrid.Rd
 c4a239fe76c19f7ad14703222c2fd514 *man/dggetres.Rd
 06ef875988401e155f6d332646958658 *man/dginfo.Rd
@@ -32,7 +32,7 @@ c4a239fe76c19f7ad14703222c2fd514 *man/dggetres.Rd
 4b2a78b4c5bd5ab940791d381b29c41f *man/dgquakes.Rd
 b1d1ed84f72bb2f17c33eb01a09f0993 *man/dgrectgrid.Rd
 dc28d5619276175173104d89ec74fad2 *man/dgrun.Rd
-1fd0f993809782293a21099c4597b43c *man/dgsetres.Rd
+d3080b0e7564223f5b6324f2c8a52cb2 *man/dgsetres.Rd
 12e506bf1edf3e4e4aeafb9a3850d5fc *man/dgshptogrid.Rd
 001a6f955cd6ad1b12e574efc608b0a0 *man/dgtransform.Rd
 2e58656e9158a7ecb74f65027ffabd01 *man/dgverify.Rd
@@ -51,7 +51,7 @@ da747e01aaa53a48bbc6a3e9473e72f6 *src/apps/dggrid/DgHexSF.cpp
 20187f417fdd286c789187f7ee237ed0 *src/apps/dggrid/gridgen.h
 bd8f7aacfd1fd8d5049da4e753e5e800 *src/apps/dggrid/param.cpp
 7749f875d0b8bc4dc78735062c99e8e6 *src/apps/dggrid/quadclip.cpp
-d5388f38babe92dcccf80cec02cd2dc4 *src/apps/dggrid/table.cpp
+d7e3585f847f7dbdab9e61681c0feea7 *src/apps/dggrid/table.cpp
 c2fa5435a4f4dadc067c79c0f33a62ae *src/apps/dggrid/transform.cpp
 bd6f525d018663e392b39e673e0f603f *src/apps/dggrid/util.cpp
 13bedae53869d6ac8c62de556843796c *src/apps/dggrid/util.h
@@ -163,7 +163,7 @@ e3ec9ded8ee1e2aa8af19c1f6403510e *src/lib/dglib/lib/DgBoundedRF.hpp
 a892c982a9651af630b6531e7939d266 *src/lib/dglib/lib/DgCell.cpp
 49b93fc7dbf6eb2683ea0ace3f70f84a *src/lib/dglib/lib/DgColor.cpp
 5dd030a4380926001f64224cf6149277 *src/lib/dglib/lib/DgConverterBase.cpp
-0692e6b2aa26954c99aa9ce9e187bc4a *src/lib/dglib/lib/DgDVec2D.cpp
+6063c4ab4d68344e9287ffd0ba35cb9b *src/lib/dglib/lib/DgDVec2D.cpp
 ea0f4099151c04a414feb4c710ed6197 *src/lib/dglib/lib/DgDVec3D.cpp
 0ee7bf151690a8d295595206e096d901 *src/lib/dglib/lib/DgDiscRF.hpp
 33f2128f374ba77008a6bb50a5115f18 *src/lib/dglib/lib/DgDiscRFS.hpp
@@ -173,7 +173,7 @@ c071886472fd9dbf0ebf54924173bbc2 *src/lib/dglib/lib/DgDistanceBase.cpp
 be1f428d0aebc8d30c9d643025e1369d *src/lib/dglib/lib/DgDmdD4Grid2DS.cpp
 5e9091050088b7a46ced874e5232c2bc *src/lib/dglib/lib/DgDmdD8Grid2D.cpp
 cbe77f1f2e0aaec115ffa820964f377a *src/lib/dglib/lib/DgDmdD8Grid2DS.cpp
-ba76d13b0b6816b62e5fd6971f5e730b *src/lib/dglib/lib/DgEllipsoidRF.cpp
+90fc4b66d329689bda2f6d81cbd68210 *src/lib/dglib/lib/DgEllipsoidRF.cpp
 6fb729c5944d18bdd8134526f5579fcf *src/lib/dglib/lib/DgGeoSphRF.cpp
 97d39ad4d1c79575b387e62416b34bb2 *src/lib/dglib/lib/DgHexC1Grid2D.cpp
 59479150b05debfc3c5fb18f5bf7bb6a *src/lib/dglib/lib/DgHexC2Grid2D.cpp
@@ -212,9 +212,9 @@ fffb2af6b8ec4f6ed9516f3eee9c0e7e *src/lib/dglib/lib/DgParamList.cpp
 832175790a11b9f27a24cc3080e41d9e *src/lib/dglib/lib/DgPhysicalRFBase.hpp
 14a7cb6fb29fc9d8b444131c198ed1c8 *src/lib/dglib/lib/DgPhysicalRFS2D.hpp
 1e867e853182ef0f485f9429483b7b47 *src/lib/dglib/lib/DgPolygon.cpp
-590511b11043f5c59b4f6dc540b2677e *src/lib/dglib/lib/DgProjFuller.cpp
+debec2f4237003c83122117fc1fa260f *src/lib/dglib/lib/DgProjFuller.cpp
 7a15969966ae262b15ce81fcee1c5c67 *src/lib/dglib/lib/DgProjGnomonicRF.cpp
-1162ce665681f9cdfbea65f376a294e3 *src/lib/dglib/lib/DgProjISEA.cpp
+787e92199131bd8de6ee0f692f2ab1fb *src/lib/dglib/lib/DgProjISEA.cpp
 29b2083c99cba72742c10e511732bc8d *src/lib/dglib/lib/DgProjTriRF.cpp
 0b961f538c9fcaebc55f5680121d36b7 *src/lib/dglib/lib/DgRF.hpp
 4ce19a005df5c42316c8e41c7f42b475 *src/lib/dglib/lib/DgRFBase.cpp
@@ -267,6 +267,8 @@ f9c5e0f67d44984ffecc614e99b616ad *src/lib/shapelib-1.3.0/stream1.sh
 a02c6a19dbc522c7e9398bd43b66b704 *src/lib/shapelib-1.3.0/stream2.out
 954a5e679b0dab96f5457c719919cd76 *src/lib/shapelib-1.3.0/stream2.sh
 8662114c1a0774c8a6ac28bae05aa95f *src/lib/shapelib-1.3.0/stream3.out
+e2ce81f07feb4885850b1e1be5ef007e *tests/testthat.R
+fd8ee72d9ae2954cc94a840d4a524632 *tests/testthat/test_grid_construction.R
 2e734f4e5e09530ffcbd9a840d8f65bb *vignettes/bibliography.bib
 4583a9d4e4310f7c53ba83af4ceb55d1 *vignettes/dggrid.png
 c48c31d78ea43aab9c3ef6adde438cf2 *vignettes/dggridR.Rmd
