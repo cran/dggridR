@@ -1,8 +1,8 @@
 Package: dggridR
 Type: Package
 Title: Discrete Global Grids for R
-Version: 0.1.10
-Date: 2016-08-16
+Version: 0.1.11
+Date: 2016-09-18
 Author: Richard Barnes [aut, cre], Kevin Sahr [ctb], Gerald Evenden [ctb], Angus Johnson [ctb], Frank Warmerdam [ctb]
 Maintainer: Richard Barnes <rbarnes@umn.edu>
 NeedsCompilation: yes
@@ -20,6 +20,6 @@ BugReports: https://github.com/r-barnes/dggridR/
 RoxygenNote: 5.0.1
 VignetteBuilder: knitr, R.rsp
 SystemRequirements: C++11
-Packaged: 2016-08-16 15:13:26 UTC; rick
+Packaged: 2016-09-18 17:09:36 UTC; rick
 Repository: CRAN
-Date/Publication: 2016-08-16 19:50:26
+Date/Publication: 2016-09-19 01:50:30

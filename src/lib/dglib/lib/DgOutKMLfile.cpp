@@ -135,14 +135,11 @@ DgOutKMLfile::insert(const DgDVec2D& pt)
 {
    DgOutKMLfile& o(*this);
 
-   const int maxBuffSize = 200;
-   char buff[maxBuffSize];
-
-   sprintf(buff, formatStr(), pt.x(), pt.y());
-
-   o << "            " << buff;
-
-   o.flush();
+   o << "            "
+     << std::setprecision(getPrecision()) << (double) pt.x()
+     << ","
+     << std::setprecision(getPrecision()) << (double) pt.y()
+     << ",0.0\n";
 
    return o;
 }

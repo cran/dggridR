@@ -355,9 +355,10 @@ bool evalCell (GridGenParam& dp,  const DgIDGG& dgg, const DgContCartRF& cc1,
    DgPolygon verts;
    grid.setVertices(add2D, verts);
 
-   cc1.convert(loc);
-   DgDVec2D cp = *cc1.getAddress(*loc);
-   delete loc;
+   //TODO: Should this be used for something?
+   //cc1.convert(loc);
+   //DgDVec2D cp = *cc1.getAddress(*loc);
+   //delete loc;
 
    cc1.convert(verts);
 
@@ -857,7 +858,7 @@ void genGrid (GridGenParam& dp)
    if (dp.seqToPoly)
    {
       dp.nCellsAccepted = 0;
-      dp.nCellsTested = 0;
+      dp.nCellsTested   = 0;
 
       std::ifstream fin(dp.regionFiles[0].c_str());
       set<unsigned long int> seqnums; //To ensure each cell is printed once

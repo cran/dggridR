@@ -1,8 +1,8 @@
-c06979b6bd78ddffe5786555846c11e1 *DESCRIPTION
+98af5085b06822468a29e44c2f7dc73f *DESCRIPTION
 528d93d4ca89f360d0c7bbde70e00e7c *LICENCE
-b73a41c35eed182b2c1da3621163544a *NAMESPACE
-c436cde42eea3b68941f078b8ba52a99 *NEWS
-8bb5d2f6a161a0d993a31b63c25bc6d5 *R/dggridR.R
+9d94e20646ee74170309ffaf4abb68da *NAMESPACE
+05e9ff1454964fce858ab0248adf7274 *NEWS
+93ea8e842e83f32a6b6082bfe77ea06d *R/dggridR.R
 3bedeccb303a293bbf6a44f885b2beb4 *README.md
 3a9112eca18dff75553886daa41f6093 *build/vignette.rds
 2ce94c25d7e04785df702d344453f293 *data/datalist
@@ -20,6 +20,7 @@ c2bc29bacbd8b20d3f34bdc8088b50d7 *man/dg_closest_res.Rd
 8d4d8038bbae262c6ec0461169623453 *man/dg_closest_res_to_area.Rd
 70bd98f172f14e6a5520cfc4e08d719d *man/dg_closest_res_to_cls.Rd
 40c099baf3e65491b0b49e5751b9db15 *man/dg_closest_res_to_spacing.Rd
+f0946f960de0df3a89ed92fbe63b7a0c *man/dg_env.Rd
 beddcff5123a2877828254e7feca5920 *man/dg_exe_path.Rd
 9df050330037c2a0ac826598554a404a *man/dg_process_kml.Rd
 d93a1ca9d11334b07b0e73e53aefc7bb *man/dg_shpfname_south_africa.Rd
@@ -47,7 +48,7 @@ da747e01aaa53a48bbc6a3e9473e72f6 *src/apps/dggrid/DgHexSF.cpp
 73530619c2f714b39d76777d1c686d25 *src/apps/dggrid/binvals.cpp
 9416aade736c0b969c6ad363a69b9428 *src/apps/dggrid/dggrid.cpp
 8e772d5e6dd95902fb996cd2206483da *src/apps/dggrid/dggrid.h
-5c263fa27736dd5d4d1c0f2c2f97f2dc *src/apps/dggrid/gridgen.cpp
+6b3f0ad7c2f274181656f28744a3156f *src/apps/dggrid/gridgen.cpp
 20187f417fdd286c789187f7ee237ed0 *src/apps/dggrid/gridgen.h
 bd8f7aacfd1fd8d5049da4e753e5e800 *src/apps/dggrid/param.cpp
 7749f875d0b8bc4dc78735062c99e8e6 *src/apps/dggrid/quadclip.cpp
@@ -178,7 +179,7 @@ cbe77f1f2e0aaec115ffa820964f377a *src/lib/dglib/lib/DgDmdD8Grid2DS.cpp
 97d39ad4d1c79575b387e62416b34bb2 *src/lib/dglib/lib/DgHexC1Grid2D.cpp
 59479150b05debfc3c5fb18f5bf7bb6a *src/lib/dglib/lib/DgHexC2Grid2D.cpp
 ec285816324b62527472b7d45ef3e150 *src/lib/dglib/lib/DgHexGrid2DS.cpp
-1eb0a99f6ec1c7102d97ca46997b8a87 *src/lib/dglib/lib/DgIDGG.cpp
+598285574fb49b9fa363f27e557be909 *src/lib/dglib/lib/DgIDGG.cpp
 b93bb8d35aef0cf66f89ffa830dd0844 *src/lib/dglib/lib/DgIDGGS.cpp
 435db3b6f309639c9101db49959e8c5e *src/lib/dglib/lib/DgIDGGS3H.cpp
 73867e5b59dbe19b948ab8cf7492d152 *src/lib/dglib/lib/DgIDGGS43H.cpp
@@ -199,7 +200,7 @@ f1b8c37e6553024ce82bbf8ce9c9f869 *src/lib/dglib/lib/DgInShapefile.cpp
 b8f9f58401fd2be65bf7ffbd543e1469 *src/lib/dglib/lib/DgLocation.cpp
 246d6ad7a9d0891c60ccfd9dc1c506ac *src/lib/dglib/lib/DgOutAIGenFile.cpp
 bae10a91f606de44a2bd435370c221a7 *src/lib/dglib/lib/DgOutGeoJSONFile.cpp
-40e63fa4b866ce3d8cd425dd9f7d91a5 *src/lib/dglib/lib/DgOutKMLfile.cpp
+40ae473ee605f96e112937c8209a4480 *src/lib/dglib/lib/DgOutKMLfile.cpp
 a1177a0fc06d782de30f5e2685dfc3f9 *src/lib/dglib/lib/DgOutLocFile.cpp
 9e44fc459f9196b4501460b1fdf752a2 *src/lib/dglib/lib/DgOutLocTextFile.cpp
 2839b936ff64cb3743ab849e24987fe0 *src/lib/dglib/lib/DgOutPtsText.cpp
@@ -212,7 +213,7 @@ fffb2af6b8ec4f6ed9516f3eee9c0e7e *src/lib/dglib/lib/DgParamList.cpp
 832175790a11b9f27a24cc3080e41d9e *src/lib/dglib/lib/DgPhysicalRFBase.hpp
 14a7cb6fb29fc9d8b444131c198ed1c8 *src/lib/dglib/lib/DgPhysicalRFS2D.hpp
 1e867e853182ef0f485f9429483b7b47 *src/lib/dglib/lib/DgPolygon.cpp
-debec2f4237003c83122117fc1fa260f *src/lib/dglib/lib/DgProjFuller.cpp
+9417f969349b7c848833da54703b80b2 *src/lib/dglib/lib/DgProjFuller.cpp
 7a15969966ae262b15ce81fcee1c5c67 *src/lib/dglib/lib/DgProjGnomonicRF.cpp
 787e92199131bd8de6ee0f692f2ab1fb *src/lib/dglib/lib/DgProjISEA.cpp
 29b2083c99cba72742c10e511732bc8d *src/lib/dglib/lib/DgProjTriRF.cpp
