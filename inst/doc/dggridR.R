@@ -113,7 +113,7 @@ lat   <- phi-90
 df    <- data.frame(lat=lat,lon=lon)
 
 #Construct a global grid in which every hexagonal cell has an area of
-#100,000 km^2. You could, of course, choose a much smaller value, but these
+#100,000 miles^2. You could, of course, choose a much smaller value, but these
 #will show up when I map them later.
 
 #Note: Cells can only have certain areas, the `dgconstruct()` function below
@@ -153,7 +153,7 @@ library(dplyr)
 N <- 100    #How many cells to sample
 
 #Construct a global grid in which every hexagonal cell has an area of
-#100,000 km^2. You could, of course, choose a much smaller value, but these
+#100,000 miles^2. You could, of course, choose a much smaller value, but these
 #will show up when I map them later.
 
 #Note: Cells can only have certain areas, the `dgconstruct()` function below
@@ -185,7 +185,7 @@ p
 
 ## ---- results='hide', warning=FALSE, error=FALSE, message=FALSE----------
 library(dggridR)
-#Generate a global grid whose cells are ~100,000 km^2
+#Generate a global grid whose cells are ~100,000 miles^2
 dggs         <- dgconstruct(area=100000, metric=FALSE, resround='nearest')
 #Save the cells to a KML file for use in other software
 gridfilename <- dgearthgrid(dggs,savegrid=TRUE)
@@ -209,5 +209,24 @@ p<- ggplot() +
     geom_polygon(data=sa_grid,   aes(x=long, y=lat, group=group), fill="blue", alpha=0.4)   +
     geom_path   (data=sa_grid,   aes(x=long, y=lat, group=group), alpha=0.4, color="white") +
     coord_equal()
+p
+
+## ---- results='hide', warning=FALSE, error=FALSE, message=FALSE, fig.align='center', fig.width=6, fig.height=4, echo=FALSE----
+
+lat <- c(90,-90,26.57,-26.57,26.57,-26.57,26.57,-26.57,26.57,-26.57,26.57,-26.57)
+lon <- c(0,0,0,36,72,108,144,180,216,252,288,324)
+
+dggs  <- dgconstruct(area=100000, metric=FALSE, resround='nearest')
+cells <- dgtransform(dggs,lat,lon)
+grid  <- dgcellstogrid(dggs,cells,frame=TRUE,wrapcells=TRUE) #Get grid
+
+#Get polygons for each country of the world
+countries      <- map_data("world")
+
+#Plot everything on a flat map
+p<- ggplot() + 
+    geom_polygon(data=countries, aes(x=long, y=lat, group=group), fill=NA, color="black")   +
+    geom_polygon(data=grid,      aes(x=long, y=lat, group=group), alpha=0.6, fill="purple")    +
+    geom_path   (data=grid,      aes(x=long, y=lat, group=group), alpha=0.4, color="white")
 p
 
