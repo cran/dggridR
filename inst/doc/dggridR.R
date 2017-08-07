@@ -40,7 +40,10 @@ dggs          <- dgconstruct(spacing=1000, metric=FALSE, resround='down')
 data(dgquakes)
 
 #Get the corresponding grid cells for each earthquake epicenter (lat-long pair)
-dgquakes$cell <- dgtransform(dggs,dgquakes$lat,dgquakes$lon)
+dgquakes$cell <- dgGEO_to_SEQNUM(dggs,dgquakes$lon,dgquakes$lat)$seqnum
+
+#Converting SEQNUM to GEO gives the center coordinates of the cells
+cellcenters   <- dgSEQNUM_to_GEO(dggs,dgquakes$cell)
 
 #Get the number of earthquakes in each cell
 quakecounts   <- dgquakes %>% group_by(cell) %>% summarise(count=n())
@@ -50,7 +53,7 @@ grid          <- dgcellstogrid(dggs,quakecounts$cell,frame=TRUE,wrapcells=TRUE)
 
 #Update the grid cells' properties to include the number of earthquakes
 #in each cell
-grid          <- merge(grid,quakecounts,by.x="Name",by.y="cell")
+grid          <- merge(grid,quakecounts,by.x="cell",by.y="cell")
 
 #Make adjustments so the output is more visually interesting
 grid$count    <- log(grid$count)
@@ -66,6 +69,7 @@ p<- ggplot() +
     geom_polygon(data=countries, aes(x=long, y=lat, group=group), fill=NA, color="black")   +
     geom_polygon(data=grid,      aes(x=long, y=lat, group=group, fill=count), alpha=0.4)    +
     geom_path   (data=grid,      aes(x=long, y=lat, group=group), alpha=0.4, color="white") +
+    geom_point  (aes(x=cellcenters$lon_deg, y=cellcenters$lat_deg)) +
     scale_fill_gradient(low="blue", high="red")
 p
 
@@ -88,7 +92,7 @@ p+coord_map("ortho", orientation = c(-38.49831, -179.9223, 0))+
 #  
 #  #Update the grid cells' properties to include the number of earthquakes
 #  #in each cell
-#  grid@data$count <- merge(grid@data, quakecounts, by.x="Name", by.y="cell", all.x=TRUE)$count
+#  grid@data$count <- merge(grid@data, quakecounts, by.x="cell", by.y="cell", all.x=TRUE)$count
 #  
 #  #Write out the grid
 #  writeOGR(grid, "quakes_per_cell.kml", "quakes", "KML")
@@ -126,10 +130,10 @@ df    <- data.frame(lat=lat,lon=lon)
 dggs    <- dgconstruct(area=100000, metric=FALSE, resround='nearest')
 
 #Get the corresponding grid cells for each randomly chosen lat-long
-df$cell <- dgtransform(dggs,df$lat,df$lon)
+df$cell <- dgGEO_to_SEQNUM(dggs,df$lon,df$lat)$seqnum
 
 #Get the hexes for each of these cells
-gridfilename <- dgcellstogrid(dggs,df$cell,savegrid=TRUE)
+gridfilename <- dgcellstogrid(dggs,df$cell)
 
 ## ---- fig.width=6, fig.height=4------------------------------------------
 #Get the grid in a more convenient format
@@ -188,20 +192,19 @@ library(dggridR)
 #Generate a global grid whose cells are ~100,000 miles^2
 dggs         <- dgconstruct(area=100000, metric=FALSE, resround='nearest')
 #Save the cells to a KML file for use in other software
-gridfilename <- dgearthgrid(dggs,savegrid=TRUE)
+gridfilename <- dgearthgrid(dggs,savegrid=tempfile())
 
 ## ---- results='hide', warning=FALSE, error=FALSE, message=FALSE, fig.align='center', fig.width=5, fig.height=5----
 library(dggridR)
 
 #Generate a dggs specifying an intercell spacing of ~25 miles
-dggs      <- dgconstruct(spacing=25, metric=FALSE, resround='nearest')
-
-#Use the included South Africa borders shapefile to generate a grid covering
-#South Africa (including Lesotho - holes are not excluded)
-sa_grid   <- dgshptogrid(dggs,dg_shpfname_south_africa)
+dggs      <- dgconstruct(spacing=100, metric=FALSE, resround='nearest')
 
 #Read in the South Africa's borders from the shapefile
-sa_border <- readOGR(dsn=dg_shpfname_south_africa, layer="ZAF_adm0")
+sa_border <- readOGR(dsn=dg_shpfname_south_africa(), layer="ZAF_adm0")
+
+#Get a grid covering South Africa
+sa_grid   <- dgshptogrid(dggs, dg_shpfname_south_africa())
 
 #Plot South Africa's borders and the associated grid
 p<- ggplot() + 
@@ -217,7 +220,7 @@ lat <- c(90,-90,26.57,-26.57,26.57,-26.57,26.57,-26.57,26.57,-26.57,26.57,-26.57
 lon <- c(0,0,0,36,72,108,144,180,216,252,288,324)
 
 dggs  <- dgconstruct(area=100000, metric=FALSE, resround='nearest')
-cells <- dgtransform(dggs,lat,lon)
+cells <- dgGEO_to_SEQNUM(dggs,lon,lat)$seqnum
 grid  <- dgcellstogrid(dggs,cells,frame=TRUE,wrapcells=TRUE) #Get grid
 
 #Get polygons for each country of the world
