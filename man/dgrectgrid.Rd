@@ -6,7 +6,7 @@
          specified region}
 \usage{
 dgrectgrid(dggs, minlat = -1, minlon = -1, maxlat = -1, maxlon = -1,
-  cellsize = 0.1, frame = TRUE, wrapcells = TRUE, savegrid = FALSE)
+  cellsize = 0.1, frame = TRUE, wrapcells = TRUE, savegrid = NA)
 }
 \arguments{
 \item{dggs}{A dggs object from dgconstruct()}
@@ -40,7 +40,7 @@ Default: NA (do not save grid, return it)}
 }
 \value{
 Returns a data frame or OGR poly object, as specified by \code{frame}.
-        If \code{savegrid=TRUE}, returns a filename.
+        If \code{!is.na(savegrid)}, returns a filename.
 }
 \description{
 Note: This may generate odd results for very large
@@ -48,6 +48,7 @@ Note: This may generate odd results for very large
                  weird... as you should know, if you're using this package.
 }
 \examples{
+\dontrun{
 library(dggridR)
 dggs <- dgconstruct(spacing=1000,metric=FALSE,resround='down')
 
@@ -55,5 +56,5 @@ dggs <- dgconstruct(spacing=1000,metric=FALSE,resround='down')
 grid <- dgrectgrid(dggs,
                minlat=24.7433195, minlon=-124.7844079, 
                maxlat=49.3457868, maxlon=-66.9513812, frame=TRUE)
-
+}
 }

@@ -34,7 +34,7 @@ Default: NA (do not save grid, return it)}
 }
 \value{
 Returns a data frame or OGR poly object, as specified by \code{frame}.
-        If \code{savegrid=TRUE}, returns a filename.
+        If \code{!is.na(savegrid)}, returns a filename.
 }
 \description{
 Returns the coordinates constituting the boundary of a 
@@ -56,9 +56,10 @@ Returns the coordinates constituting the boundary of a
                  precision.
 }
 \examples{
+\dontrun{
 library(dggridR)
 
 dggs <- dgconstruct(spacing=25, metric=FALSE, resround='nearest')
 south_africa_grid <- dgshptogrid(dggs,dg_shpfname_south_africa())
-
+}
 }
