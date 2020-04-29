@@ -5,8 +5,13 @@
 \title{Determine an appropriate grid resolution based on a desired 
        characteristic length scale of the cells.}
 \usage{
-dg_closest_res_to_cls(dggs, cls, round = "nearest", show_info = TRUE,
-  metric = TRUE)
+dg_closest_res_to_cls(
+  dggs,
+  cls,
+  round = "nearest",
+  show_info = TRUE,
+  metric = TRUE
+)
 }
 \arguments{
 \item{dggs}{A dggs object from dgconstruct()}
@@ -28,10 +33,8 @@ The characteristic length scale (CLS) is the diameter of a spherical
          cap of the same area as a cell of the specified resolution.
 }
 \examples{
-\dontrun{
 library(dggridR)
 dggs <- dgconstruct(res=20)
 res  <- dg_closest_res_to_cls(dggs,1)
 dggs <- dgsetres(dggs,res)
-}
 }

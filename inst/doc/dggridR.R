@@ -28,7 +28,7 @@ orthobase+
  geom_path(data=hgrids[[2]], aes(x=long, y=lat, group=group), alpha=1, color="#D95F02")+
  geom_path(data=hgrids[[3]], aes(x=long, y=lat, group=group), alpha=1, color="#7570B3")
 
-## ---- results='hide', warning=FALSE, error=FALSE, message=FALSE----------
+## ---- results='hide', warning=FALSE, error=FALSE, message=FALSE---------------
 #Include libraries
 library(dggridR)
 library(dplyr)
@@ -63,7 +63,7 @@ grid          <- grid %>% mutate(count=ifelse(count>cutoff,cutoff,count))
 #Get polygons for each country of the world
 countries <- map_data("world")
 
-## ---- fig.width=6, fig.height=4------------------------------------------
+## ---- fig.width=6, fig.height=4-----------------------------------------------
 #Plot everything on a flat map
 p<- ggplot() + 
     geom_polygon(data=countries, aes(x=long, y=lat, group=group), fill=NA, color="black")   +
@@ -73,7 +73,7 @@ p<- ggplot() +
     scale_fill_gradient(low="blue", high="red")
 p
 
-## ---- fig.width=6, fig.height=6------------------------------------------
+## ---- fig.width=6, fig.height=6-----------------------------------------------
 #Replot on a spherical projection
 p+coord_map("ortho", orientation = c(-38.49831, -179.9223, 0))+
   xlab('')+ylab('')+
@@ -83,7 +83,7 @@ p+coord_map("ortho", orientation = c(-38.49831, -179.9223, 0))+
   theme(axis.text.y=element_blank())+
   ggtitle('Your data could look like this')
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  library(rgdal)
 #  
 #  #Get the grid cell boundaries for the whole Earth using this dggs in a form
@@ -97,7 +97,7 @@ p+coord_map("ortho", orientation = c(-38.49831, -179.9223, 0))+
 #  #Write out the grid
 #  writeOGR(grid, "quakes_per_cell.kml", "quakes", "KML")
 
-## ---- results='hide', warning=FALSE, error=FALSE, message=FALSE----------
+## ---- results='hide', warning=FALSE, error=FALSE, message=FALSE---------------
 #Include libraries
 library(dggridR)
 library(rgdal)
@@ -135,7 +135,7 @@ df$cell <- dgGEO_to_SEQNUM(dggs,df$lon,df$lat)$seqnum
 #Get the hexes for each of these cells
 gridfilename <- dgcellstogrid(dggs,df$cell)
 
-## ---- fig.width=6, fig.height=4------------------------------------------
+## ---- fig.width=6, fig.height=4-----------------------------------------------
 #Get the grid in a more convenient format
 grid           <- dgcellstogrid(dggs,df$cell,frame=TRUE,wrapcells=TRUE)
 
@@ -149,7 +149,7 @@ p<- ggplot() +
     geom_path   (data=grid,      aes(x=long, y=lat, group=group), alpha=0.4, color="white")
 p
 
-## ---- results='hide', warning=FALSE, error=FALSE, message=FALSE----------
+## ---- results='hide', warning=FALSE, error=FALSE, message=FALSE---------------
 #Include libraries
 library(dggridR)
 library(dplyr)
@@ -173,7 +173,7 @@ maxcell <- dgmaxcell(dggs)                     #Get maximum cell id
 cells   <- sample(1:maxcell, N, replace=FALSE) #Choose random cells
 grid    <- dgcellstogrid(dggs,cells,frame=TRUE,wrapcells=TRUE) #Get grid
 
-## ---- fig.width=6, fig.height=4------------------------------------------
+## ---- fig.width=6, fig.height=4-----------------------------------------------
 #Get the grid in a more convenient format
 grid           <- dgcellstogrid(dggs,df$cell,frame=TRUE,wrapcells=TRUE)
 
@@ -187,7 +187,7 @@ p<- ggplot() +
     geom_path   (data=grid,      aes(x=long, y=lat, group=group), alpha=0.4, color="white")
 p
 
-## ---- results='hide', warning=FALSE, error=FALSE, message=FALSE----------
+## ---- results='hide', warning=FALSE, error=FALSE, message=FALSE---------------
 library(dggridR)
 #Generate a global grid whose cells are ~100,000 miles^2
 dggs         <- dgconstruct(area=100000, metric=FALSE, resround='nearest')

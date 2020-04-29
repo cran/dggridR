@@ -34,7 +34,7 @@ Note: If you have a high-resolution grid this may take a
                  loooooong time to execute.
 }
 \examples{
-\dontrun{
+\donttest{
 library(dggridR)
 dggs         <- dgconstruct(res=20)
 res          <- dg_closest_res_to_spacing(dggs,spacing=1000,round='down',metric=FALSE)
