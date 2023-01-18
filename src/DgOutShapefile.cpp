@@ -1,8 +1,27 @@
+#ifndef DGGRIDR
+#define DGGRIDR
+#endif
+/*******************************************************************************
+    Copyright (C) 2021 Kevin Sahr
+
+    This file is part of DGGRID.
+
+    DGGRID is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    DGGRID is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*******************************************************************************/
 ////////////////////////////////////////////////////////////////////////////////
 //
 // DgOutShapefile.cpp: DgOutShapefile class implementation
-//
-// Version 6.1 - Kevin Sahr, 5/23/13
 //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -20,16 +39,19 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-DgOutShapefile::DgOutShapefile (const DgGeoSphDegRF& rfIn, 
-            const string& fileNameIn, int precisionIn, bool isPointFileIn, 
+DgOutShapefile::DgOutShapefile (const DgGeoSphDegRF& rfIn,
+            const string& fileNameIn, int precisionIn, bool isPointFileIn,
             int shapefileIdLen, DgReportLevel failLevelIn)
    : DgOutLocFile (fileNameIn, rfIn, isPointFileIn, failLevelIn),
-     geoRF_ (rfIn.geoRF()), dbFile_ (NULL), shpFile_ (NULL), recNum_ (0), 
+     geoRF_ (rfIn.geoRF()), dbFile_ (NULL), shpFile_ (NULL), recNum_ (0),
      numDigits_ (precisionIn), numFields_ (0), idLen_ (shapefileIdLen)
 {
-   if (rfIn.vecAddress(DgDVec2D(M_ZERO, M_ZERO)) == 0)
+   // test for override of vecAddress
+   DgAddressBase* dummy = rfIn.vecAddress(DgDVec2D(M_ZERO, M_ZERO));
+   if (!dummy)
       report("DgOutShapefile::DgOutShapefile(): RF " + rfIn.name() +
              " must override the vecAddress() method", DgBase::Fatal);
+   delete dummy;
 
    if (!open(fileNameIn, failLevelIn))
       report("DgOutShapefile::DgOutShapefile() unable to open file " +
@@ -38,7 +60,7 @@ DgOutShapefile::DgOutShapefile (const DgGeoSphDegRF& rfIn,
 } // DgOutShapefile::DgOutShapefile
 
 ////////////////////////////////////////////////////////////////////////////////
-bool 
+bool
 DgOutShapefile::open (const string& fileName, DgReportLevel failLevel)
 {
    // create the database file
@@ -65,7 +87,7 @@ DgOutShapefile::open (const string& fileName, DgReportLevel failLevel)
    DBFClose(dbFile_);
 
    dbFile_ = DBFOpen(dbFileName_.c_str(), "rb+");
-   if (!dbFile_) 
+   if (!dbFile_)
       report("DgOutShapefile::open() unable to open database file " +
              dbFileName_, failLevel);
 
@@ -79,7 +101,7 @@ DgOutShapefile::open (const string& fileName, DgReportLevel failLevel)
    else
       shpFile_ = SHPCreate(shpFileName_.c_str(), SHPT_POLYGON);
 
-   if (!shpFile_) 
+   if (!shpFile_)
       report("DgOutShapefile::open() unable to create shapefile " +
              shpFileName_, failLevel);
 
@@ -129,7 +151,7 @@ DgOutShapefile::open (const string& fileName, DgReportLevel failLevel)
 } // DgOutShapefile::open
 
 ////////////////////////////////////////////////////////////////////////////////
-void 
+void
 DgOutShapefile::addFields (const set<DgDBFfield>& fields)
 {
    if (DBFGetRecordCount(dbFile_) > 0)
@@ -138,10 +160,10 @@ DgOutShapefile::addFields (const set<DgDBFfield>& fields)
 
 //cout << "Adding fields: " << endl;
 
-   for (set<DgDBFfield>::iterator it = fields.begin(); 
+   for (set<DgDBFfield>::iterator it = fields.begin();
            it != fields.end(); it++)
    {
-      if (DBFAddField(dbFile_, it->fieldName().c_str(), it->type(), 
+      if (DBFAddField(dbFile_, it->fieldName().c_str(), it->type(),
              it->width(), it->precision()) == -1)
          ::report("DgOutShapefile::addFields() unable to add " + it->fieldName()
                 + " in file " + dbFileName_, DgBase::Fatal);
@@ -153,7 +175,7 @@ DgOutShapefile::addFields (const set<DgDBFfield>& fields)
    DBFClose(dbFile_);
 
    dbFile_ = DBFOpen(dbFileName_.c_str(), "rb+");
-   if (!dbFile_) 
+   if (!dbFile_)
       report("DgOutShapefile::addFields() unable to reopen database file " +
              dbFileName_, DgBase::Fatal);
 
@@ -163,7 +185,7 @@ DgOutShapefile::addFields (const set<DgDBFfield>& fields)
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 DgOutLocFile&
-DgOutShapefile::insert (const DgDVec2D& pt)
+DgOutShapefile::insert (const DgDVec2D&)
 //
 // Put the point pt.
 //
@@ -177,7 +199,7 @@ DgOutShapefile::insert (const DgDVec2D& pt)
 } // DgOutLocFile& DgOutShapefile::insert
 
 ////////////////////////////////////////////////////////////////////////////////
-void 
+void
 DgOutShapefile::writeDbf (const string& id)
 {
    // write the label
@@ -185,7 +207,7 @@ DgOutShapefile::writeDbf (const string& id)
       ::report("DgOutShapefile::writeDbf() index string length of " +
                dgg::util::to_string(id.length()) + " exceeds value "
                "of parameter shapefile_id_field_length.", failLevel());
-   
+
    if (!DBFWriteStringAttribute(dbFile_, recNum_, 0, id.c_str()))
       report("DgOutShapefile::writeDbf() unable to write to " +
              dbFileName_, failLevel());
@@ -200,14 +222,13 @@ DgOutShapefile::writeDbf (const string& id)
                 dbFileName_, failLevel());
 
       // now write default values to the fields that are present
-      for (set<DgDBFfield>::iterator it = curFields_.begin(); 
+      for (set<DgDBFfield>::iterator it = curFields_.begin();
            it != curFields_.end(); it++)
       {
          int fNum = DBFGetFieldIndex(dbFile_, it->fieldName().c_str());
          bool res = false;
 //cout << "writing " << fNum << " " << it->fieldName() << " ";
-         switch (it->type())
-         {
+         switch (it->type()) {
             case FTString:
 //cout << defStrAttribute() << endl;
                res = DBFWriteStringAttribute(dbFile_, recNum_, fNum, defStrAttribute().c_str());
@@ -223,8 +244,15 @@ DgOutShapefile::writeDbf (const string& id)
             case FTLogical:
                ::report("DgOutShapefile::writeDbf() logical shapefile "
                    "attributes not supported", failLevel());
+               break;
+            case FTInvalid:
+               ::report("DgOutShapefile::writeDbf() invalid field",
+                   failLevel());
+               break;
             default:
-               res = false;
+               ::report("DgOutShapefile::writeDbf() unexpected field type",
+                   failLevel());
+               break;
          }
 
          if (!res)
@@ -259,7 +287,7 @@ DgOutShapefile::insert (DgLocation& loc, const string* label)
    // now write to the files
    writeDbf(id.c_str());
 
-   SHPObject *ptShape = SHPCreateObject(SHPT_POINT, recNum_, 0, NULL, NULL, 1, 
+   SHPObject *ptShape = SHPCreateObject(SHPT_POINT, recNum_, 0, NULL, NULL, 1,
                              &x, &y, NULL, NULL);
    SHPWriteObject(shpFile_, -1, ptShape);
    SHPDestroyObject(ptShape);
@@ -273,8 +301,7 @@ DgOutShapefile::insert (DgLocation& loc, const string* label)
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 DgOutLocFile&
-DgOutShapefile::insert (DgLocVector& vec, const string* label, 
-                     const DgLocation* cent)
+DgOutShapefile::insert (DgLocVector&, const string*, const DgLocation*)
 //
 // Put the polyline vec.
 //
@@ -290,8 +317,8 @@ DgOutShapefile::insert (DgLocVector& vec, const string* label,
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 DgOutLocFile&
-DgOutShapefile::insert (DgPolygon& poly, const string* label, 
-                     const DgLocation* cent)
+DgOutShapefile::insert (DgPolygon& poly, const string* label,
+                     const DgLocation* /* cent */)
 //
 // Put the polygon poly.
 //
@@ -307,13 +334,13 @@ DgOutShapefile::insert (DgPolygon& poly, const string* label,
 
    // output the vertices
    const vector<DgAddressBase*>& v = poly.addressVec();
-   int numVerts = v.size() + 1;
+   int numVerts = (int) v.size() + 1;
    double *x = new double[numVerts];
    double *y = new double[numVerts];
 
    // need to reverse order to get clockwise winding
-   int oldNdx = v.size() - 1;
-   for (int newNdx = 0; newNdx < numVerts - 1; newNdx++) 
+   int oldNdx = (int) v.size() - 1;
+   for (int newNdx = 0; newNdx < numVerts - 1; newNdx++)
    {
       DgDVec2D vec = rf().getVecAddress(*v[oldNdx]);
       x[newNdx] = vec.x();
@@ -321,7 +348,7 @@ DgOutShapefile::insert (DgPolygon& poly, const string* label,
 
       oldNdx--;
    }
-   
+
    // complete the ring by repeating the first vertex
    x[numVerts - 1] = x[0];
    y[numVerts - 1] = y[0];

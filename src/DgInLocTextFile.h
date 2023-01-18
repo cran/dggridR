@@ -1,18 +1,37 @@
+#ifndef DGGRIDR
+#define DGGRIDR
+#endif
+/*******************************************************************************
+    Copyright (C) 2021 Kevin Sahr
+
+    This file is part of DGGRID.
+
+    DGGRID is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    DGGRID is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*******************************************************************************/
 ////////////////////////////////////////////////////////////////////////////////
 //
 // DgInLocTextFile.h: DgInLocTextFile class definitions
-//
-// Version 6.1 - Kevin Sahr, 5/23/13
 //
 ////////////////////////////////////////////////////////////////////////////////
 
 #ifndef DGINLOCTEXTFILE_H
 #define DGINLOCTEXTFILE_H
 
-#include <string>
-#include <fstream>
-
 #include "DgInLocFile.h"
+
+#include <fstream>
+#include <string>
 
 using namespace std;
 
@@ -28,12 +47,12 @@ class DgInLocTextFile : public ifstream, public DgInLocFile {
 
    public:
 
-      DgInLocTextFile (const DgRFBase& rfIn, 
-                       const string* fileNameIn = NULL, 
+      DgInLocTextFile (const DgRFBase& rfIn,
+                       const string* fileNameIn = NULL,
                        bool isPointFileIn = false,
                        DgReportLevel failLevel = DgBase::Fatal);
 
-      void rewind (void) { seekg(streampos(0)); clear(); }
+      void rewind (void) { seekg(std::streampos(0)); clear(); }
 
       virtual bool open (const string* fileName = NULL,
                  DgReportLevel failLevel = DgBase::Fatal);

@@ -1,8 +1,27 @@
+#ifndef DGGRIDR
+#define DGGRIDR
+#endif
+/*******************************************************************************
+    Copyright (C) 2021 Kevin Sahr
+
+    This file is part of DGGRID.
+
+    DGGRID is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    DGGRID is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*******************************************************************************/
 ////////////////////////////////////////////////////////////////////////////////
 //
 // DgSeriesConverter.cpp: DgSeriesConverter class implementation
-//
-// Version 6.1 - Kevin Sahr, 5/23/13
 //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -28,7 +47,7 @@ DgSeriesConverter::DgSeriesConverter
       if (series[i]->toFrame() != series[i+1]->fromFrame())
       {
          report(string("DgSeriesConverter::DgSeriesConverter() mismatch in "
-           "toFrame/fromFrame: ") + series[i]->toFrame().name() + string("")
+           "toFrame/fromFrame: ") + series[i]->toFrame().name() + string("/")
            + series[i+1]->fromFrame().name(), DgBase::Fatal);
       }
    }
@@ -202,12 +221,21 @@ DgSeriesConverter::~DgSeriesConverter (void)
 DgAddressBase* 
 DgSeriesConverter::createConvertedAddress (const DgAddressBase& addIn) const
 {
-   //if (isTraceOn()) traceStream() << "->series";
+   // keep track of nested series depth for formatting output
+   static int seriesDepth = 0;
+   seriesDepth++;
+
+   if (isTraceOn())
+      traceStream() << " -> " << std::string(seriesDepth, '*') << " <SERIES> " 
+                    << fromFrame().name() << ": " << addIn << endl;
 
    DgAddressBase* pAdd0 = series_[0]->createConvertedAddress(addIn);
+   if (isTraceOn()) 
+      traceStream() << std::string(seriesDepth, '*') << "  --> " 
+                    << fromFrame().name() << ": " << *pAdd0 << endl;
 
 #if DGDEBUG
-cout << "BEGIN series conversion" << endl;
+dgcout << "BEGIN series conversion" << endl;
 #endif
    for (int i = 1; i < size(); i++)
    {
@@ -215,10 +243,15 @@ cout << "BEGIN series conversion" << endl;
 
       delete pAdd0;
       pAdd0 = pAdd1;
+      if (isTraceOn()) 
+         traceStream() << std::string(seriesDepth, '*') << "  --> " 
+                       << fromFrame().name() << ": " << *pAdd0 << endl;
    }
 #if DGDEBUG
-cout << "END series conversion" << endl;
+dgcout << "END series conversion" << endl;
 #endif
+
+   seriesDepth--;
 
    return pAdd0;
 

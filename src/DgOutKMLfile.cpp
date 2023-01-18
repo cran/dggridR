@@ -1,8 +1,27 @@
+#ifndef DGGRIDR
+#define DGGRIDR
+#endif
+/*******************************************************************************
+    Copyright (C) 2021 Kevin Sahr
+
+    This file is part of DGGRID.
+
+    DGGRID is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    DGGRID is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*******************************************************************************/
 ////////////////////////////////////////////////////////////////////////////////
 //
 // DgOutKMLfile.cpp: DgOutKMLfile class implementation
-//
-// Version 6.1 - Kevin Sahr, 5/23/13
 //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -16,16 +35,17 @@
 #include "DgCell.h"
 #include "DgGeoSphRF.h"
 
-DgOutKMLfile::DgOutKMLfile(const DgGeoSphDegRF& rf, const std::string& filename, 
-    int precision, bool isPointFile, const string& colorIn, int widthIn, 
+DgOutKMLfile::DgOutKMLfile(const DgGeoSphDegRF& rf, const std::string& filename,
+    int precision, bool isPointFile, const string& colorIn, int widthIn,
     const string& nameIn, const string& descIn, DgReportLevel failLevel)
    : DgOutLocTextFile (filename, rf, isPointFile, "kml", precision, failLevel)
 {
-   if (0 == rf.vecAddress(DgDVec2D()))
-   {
+   // test for override of vecAddress
+   DgAddressBase* dummy = rf.vecAddress(DgDVec2D(M_ZERO, M_ZERO));
+   if (!dummy)
       DgOutputStream::report("DgOutKMLfile::DgOutKMLfile(): RF " + rf.name() +
-        " must override the vecAddress() method", DgBase::Fatal);
-   }
+             " must override the vecAddress() method", DgBase::Fatal);
+   delete dummy;
 
    setColor(colorIn);
    setWidth(widthIn);
@@ -37,7 +57,7 @@ DgOutKMLfile::DgOutKMLfile(const DgGeoSphDegRF& rf, const std::string& filename,
    preamble();
 }
 
-void 
+void
 DgOutKMLfile::setColor (const string& colorIn)
 {
    if (colorIn.length() != 8)
@@ -64,7 +84,7 @@ DgOutKMLfile::setColor (const string& colorIn)
    color_ = colorIn;
 }
 
-void 
+void
 DgOutKMLfile::setWidth (int widthIn)
 {
    if (widthIn < 1)
@@ -74,13 +94,13 @@ DgOutKMLfile::setWidth (int widthIn)
    width_ = widthIn;
 }
 
-void 
+void
 DgOutKMLfile::setName (const string& nameIn)
 {
    name_ = nameIn;
 }
 
-void 
+void
 DgOutKMLfile::setDescription (const string& descIn)
 {
    description_ = descIn;
@@ -101,12 +121,12 @@ void DgOutKMLfile::preamble()
 
    o << "<Folder>\n";
 
-   o << "   <name>dgout</name>\n";
-   // if (name_ == "")
-   //    o << o.DgOutputStream::fileName();
-   // else
-   //    o << name_;
-   //o << "dgout</name>\n";
+   o << "   <name>";
+   if (name_ == "")
+      o << o.DgOutputStream::fileName();
+   else
+      o << name_;
+   o << "</name>\n";
 
    o << "   <description>";
    o << description_;
@@ -124,27 +144,30 @@ void DgOutKMLfile::preamble()
 
 void DgOutKMLfile::postamble()
 {
-   DgOutKMLfile& o(*this);   
+   DgOutKMLfile& o(*this);
 
    o << "</Folder>\n" << "</kml>\n" ;
    o.flush();
 }
 
-DgOutLocFile& 
+DgOutLocFile&
 DgOutKMLfile::insert(const DgDVec2D& pt)
 {
    DgOutKMLfile& o(*this);
 
-   o << "            "
-     << std::setprecision(getPrecision()) << (double) pt.x()
-     << ","
-     << std::setprecision(getPrecision()) << (double) pt.y()
-     << ",0.0\n";
+   const int maxBuffSize = 200;
+   char buff[maxBuffSize];
+
+   snprintf(buff, maxBuffSize, formatStr(), pt.x(), pt.y());
+
+   o << "            " << buff;
+
+   o.flush();
 
    return o;
 }
 
-DgOutLocFile& 
+DgOutLocFile&
 DgOutKMLfile::insert (DgLocation& loc, const string* label)
 {
    DgOutKMLfile& o(*this);
@@ -168,10 +191,10 @@ DgOutKMLfile::insert (DgLocation& loc, const string* label)
    return *this;
 }
 
-DgOutLocFile& 
-DgOutKMLfile::insert (DgLocVector& vec, const string* label, const DgLocation* cent)
+DgOutLocFile&
+DgOutKMLfile::insert (DgLocVector& vec, const string* label, const DgLocation* /* cent */)
 {
-   DgOutKMLfile& o(*this);   
+   DgOutKMLfile& o(*this);
 
    rf().convert(vec);
 
@@ -198,10 +221,10 @@ DgOutKMLfile::insert (DgLocVector& vec, const string* label, const DgLocation* c
    return *this;
 }
 
-DgOutLocFile& 
-DgOutKMLfile::insert (DgPolygon& poly, const string* label, const DgLocation* cent)
+DgOutLocFile&
+DgOutKMLfile::insert (DgPolygon& poly, const string* label, const DgLocation* /* cent */)
 {
-   DgOutKMLfile& o(*this);   
+   DgOutKMLfile& o(*this);
 
    rf().convert(poly);
 

@@ -1,8 +1,27 @@
+#ifndef DGGRIDR
+#define DGGRIDR
+#endif
+/*******************************************************************************
+    Copyright (C) 2021 Kevin Sahr
+
+    This file is part of DGGRID.
+
+    DGGRID is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    DGGRID is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*******************************************************************************/
 ////////////////////////////////////////////////////////////////////////////////
 //
 // DgOutGeoJSONFile.cpp: DgOutGeoJSONFile class implementation
-//
-// Version 6.2 - Matt Gregory, added GeoJSON support, 11/4/13
 //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -22,11 +41,12 @@ DgOutGeoJSONFile::DgOutGeoJSONFile(const DgGeoSphDegRF& rf,
    : DgOutLocTextFile (filename, rf, isPointFile, "geojson", precision,
         failLevel)
 {
-   if (0 == rf.vecAddress(DgDVec2D()))
-   {
+   // test for override of vecAddress
+   DgAddressBase* dummy = rf.vecAddress(DgDVec2D(M_ZERO, M_ZERO));
+   if (!dummy)
       DgOutputStream::report("DgOutGeoJSONFile::DgOutGeoJSONFile(): RF " + rf.name() +
-        " must override the vecAddress() method", DgBase::Fatal);
-   }
+             " must override the vecAddress() method", DgBase::Fatal);
+   delete dummy;
 
    setFormatStr();
    preamble();
@@ -49,16 +69,16 @@ void DgOutGeoJSONFile::preamble()
 
 void DgOutGeoJSONFile::postamble()
 {
-   DgOutGeoJSONFile& o(*this);   
+   DgOutGeoJSONFile& o(*this);
 
-   // Delete the comma from the last feature 
+   // Delete the comma and newline from the last feature
    long pos = o.tellp();
-   o.seekp(pos - 1);
-   o << "]}";
+   o.seekp(pos - 2);
+   o << "]}\n";
    o.flush();
 }
 
-DgOutLocFile& 
+DgOutLocFile&
 DgOutGeoJSONFile::insert(const DgDVec2D& pt)
 {
    DgOutGeoJSONFile& o(*this);
@@ -66,7 +86,7 @@ DgOutGeoJSONFile::insert(const DgDVec2D& pt)
    const int maxBuffSize = 200;
    char buff[maxBuffSize];
 
-   sprintf(buff, formatStr(), pt.x(), pt.y());
+   snprintf(buff, maxBuffSize, formatStr(), pt.x(), pt.y());
 
    o << buff;
 
@@ -75,7 +95,7 @@ DgOutGeoJSONFile::insert(const DgDVec2D& pt)
    return o;
 }
 
-DgOutLocFile& 
+DgOutLocFile&
 DgOutGeoJSONFile::insert (DgLocation& loc, const string* label)
 {
    DgOutGeoJSONFile& o(*this);
@@ -93,17 +113,17 @@ DgOutGeoJSONFile::insert (DgLocation& loc, const string* label)
 
    o.insert(rf().getVecLocation(loc));
 
-   o << "}},";
+   o << "}},\n";
    o.flush();
 
    return *this;
 }
 
-DgOutLocFile& 
+DgOutLocFile&
 DgOutGeoJSONFile::insert (DgLocVector& vec, const string* label,
-   const DgLocation* cent)
+   const DgLocation* /* cent */)
 {
-   DgOutGeoJSONFile& o(*this);   
+   DgOutGeoJSONFile& o(*this);
 
    rf().convert(vec);
 
@@ -126,17 +146,17 @@ DgOutGeoJSONFile::insert (DgLocVector& vec, const string* label,
    // rewrite first vertex:
    o.insert(rf().getVecAddress(*v[0]));
 
-   o << "]]}},";
+   o << "]]}},\n";
    o.flush();
 
    return *this;
 }
 
-DgOutLocFile& 
+DgOutLocFile&
 DgOutGeoJSONFile::insert (DgPolygon& poly, const string* label,
-   const DgLocation* cent)
+   const DgLocation* /* cent */)
 {
-   DgOutGeoJSONFile& o(*this);   
+   DgOutGeoJSONFile& o(*this);
 
    rf().convert(poly);
 
@@ -159,7 +179,7 @@ DgOutGeoJSONFile::insert (DgPolygon& poly, const string* label,
    // rewrite first vertex:
    o.insert(rf().getVecAddress(*v[0]));
 
-   o << "]]}},";
+   o << "]]}},\n";
    o.flush();
 
    return *this;

@@ -1,10 +1,10 @@
 Package: dggridR
 Type: Package
 Title: Discrete Global Grids
-Version: 2.0.4
-Date: 2020-04-29
+Version: 3.0.0
+Date: 2023-01-16
 Author: Richard Barnes [aut, cre],
-  Kevin Sahr [cph, ctb],
+  Kevin Sahr [aut, cph],
   Gerald Evenden [cph],
   Angus Johnson [cph],
   Frank Warmerdam [cph],
@@ -12,12 +12,12 @@ Author: Richard Barnes [aut, cre],
   Lian Song [ctb]
 Maintainer: Richard Barnes <rijard.barnes@gmail.com>
 NeedsCompilation: yes
-Depends: R (>= 3.4.0), rgdal (>= 1.1), ggplot2 (>= 2.1), dplyr (>=
-        0.4), sp (>= 1.2)
-Suggests: knitr, rmarkdown, maps, mapproj, R.rsp, testthat
-License: MIT + file LICENCE
+Depends: R (>= 3.4.0), dplyr (>= 0.4), rlang (>= 0.4), sf (>= 1.0), sp
+        (>= 1.2)
+Suggests: ggplot2, knitr, rmarkdown, maps, mapproj, R.rsp, testthat
+License: AGPL (>= 3)
 Authors@R: c(person("Richard", "Barnes",    role = c("aut", "cre"), email = "rijard.barnes@gmail.com"),
-             person("Kevin",   "Sahr",      role = c("cph", "ctb"), email = "sahrk@sou.edu"),
+             person("Kevin",   "Sahr",      role = c("aut", "cph"), email = "sahrk@sou.edu"),
              person("Gerald",  "Evenden",   role = "cph"),
              person("Angus",   "Johnson",   role = "cph"),
              person("Frank",   "Warmerdam", role = "cph"),
@@ -30,9 +30,11 @@ BugReports: https://github.com/r-barnes/dggridR/
 Imports: Rcpp (>= 0.12.12), methods (>= 3.4.0)
 LinkingTo: Rcpp
 RcppModules: dgfuncs, gridgens, gridstats
-RoxygenNote: 7.1.0
+RoxygenNote: 7.2.3
+Encoding: UTF-8
 VignetteBuilder: knitr, R.rsp
 SystemRequirements: C++11
-Packaged: 2020-04-29 17:18:16 UTC; rick
+Language: en-US
+Packaged: 2023-01-16 19:29:20 UTC; rick
 Repository: CRAN
-Date/Publication: 2020-04-29 17:50:02 UTC
+Date/Publication: 2023-01-18 08:40:18 UTC

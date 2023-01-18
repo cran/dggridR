@@ -1,3 +1,6 @@
+#ifndef DGGRIDR
+#define DGGRIDR
+#endif
 /******************************************************************************
  * $Id: dbfopen.c,v 1.92 2016-12-05 18:44:08 erouault Exp $
  *
@@ -1476,8 +1479,8 @@ static int DBFWriteAttribute(DBFHandle psDBF, int hEntity, int iField,
             szSField[psDBF->panFieldSize[iField]] = '\0';
             nRetResult = FALSE;
         }
-        strncpy((char *) (pabyRec+psDBF->panFieldOffset[iField]),
-            szSField, psDBF->panFieldSize[iField] );
+        memcpy((char *) (pabyRec+psDBF->panFieldOffset[iField]),
+            szSField, strlen(szSField) );
         break;
       }
 

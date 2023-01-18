@@ -1,12 +1,29 @@
+#ifndef DGGRIDR
+#define DGGRIDR
+#endif
+/*******************************************************************************
+    Copyright (C) 2021 Kevin Sahr
+
+    This file is part of DGGRID.
+
+    DGGRID is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    DGGRID is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*******************************************************************************/
 ////////////////////////////////////////////////////////////////////////////////
 //
 // DgLocVector.cpp: DgLocVector class implementation
 //
-// Version 6.1 - Kevin Sahr, 5/23/13
-//
 ////////////////////////////////////////////////////////////////////////////////
-
-#include <cstdint>
 
 #include "DgLocVector.h"
 
@@ -16,7 +33,7 @@ DgLocVector::DgLocVector (const DgRFBase& rfIn, int sizeIn)
 {
    vec_.resize(sizeIn);
 
-   for (std::int64_t i = 0; i < size(); i++) 
+   for (long long int i = 0; i < size(); i++) 
      vec_[i] = rf().createAddress();
 
 } // DgLocVector::DgLocVector
@@ -27,8 +44,7 @@ DgLocVector::clearAddress (void)
 {
    tmpLoc_.address_ = 0;
 
-   for (std::int64_t i = 0; i < size(); i++)
-   {
+   for (long long int i = 0; i < size(); i++) {
       delete vec_[i];
       vec_[i] = 0;
    }
@@ -56,7 +72,7 @@ DgLocVector::operator== (const DgLocVector& vec) const
 
 ////////////////////////////////////////////////////////////////////////////////
 void 
-DgLocVector::setLoc (int ndx, const DgLocation& loc, bool conv)
+DgLocVector::setLoc (int ndx, const DgLocation& loc, bool /* conv */)
 {
    if (rf() == loc.rf()) 
    {
@@ -74,7 +90,7 @@ DgLocVector::setLoc (int ndx, const DgLocation& loc, bool conv)
 
 ////////////////////////////////////////////////////////////////////////////////
 void 
-DgLocVector::push_back (const DgLocation& loc, bool conv)
+DgLocVector::push_back (const DgLocation& loc, bool /* conv */)
 {
    if (rf() == loc.rf()) 
    {

@@ -1,8 +1,27 @@
+#ifndef DGGRIDR
+#define DGGRIDR
+#endif
+/*******************************************************************************
+    Copyright (C) 2021 Kevin Sahr
+
+    This file is part of DGGRID.
+
+    DGGRID is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    DGGRID is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*******************************************************************************/
 ////////////////////////////////////////////////////////////////////////////////
 //
 // DgColor.cpp: DgColor class implementation
-//
-// Version 6.1 - Kevin Sahr, 5/23/13
 //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -17,7 +36,7 @@ const float DgColor::undefColor = -1.0;
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-float
+static float
 max3 (float a, float b, float c)
 //
 // Return the max of three values.
@@ -30,7 +49,7 @@ max3 (float a, float b, float c)
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-float
+static float
 min3 (float a, float b, float c)
 //
 // Return the min of three values.
@@ -155,8 +174,9 @@ DgColor::set (float r, float g, float b)
 
    // build a hexadecimal color specification string
 
-   char colStr[8];
-   sprintf(colStr, "#%02x%02x%02x", (int) dgg::util::lrint(r * 255.0), 
+   const unsigned int maxColStr = 8;
+   char colStr[maxColStr];
+   snprintf(colStr, maxColStr, "#%02x%02x%02x", (int) dgg::util::lrint(r * 255.0), 
            (int) dgg::util::lrint(g * 255.0), (int) dgg::util::lrint(b * 255.0));
 
    name_ = colStr;
@@ -177,7 +197,7 @@ DgColor::set (float cyan, float magenta, float yellow, float black)
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-float 
+static float 
 hlsHelper (float n1, float n2, float hue)
 //
 // See Foley & VanDam 2nd edition p. 596

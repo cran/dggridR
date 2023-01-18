@@ -44,7 +44,7 @@ dggridR is available from CRAN via:
 If you want your code to be as up-to-date as possible, you can install it using:
 
     library(devtools) #Use `install.packages('devtools')` if need be
-    install_github('r-barnes/dggridR', vignette=TRUE)
+    devtools::install_github("r-barnes/dggridR", vignette=TRUE)
 
 Show me some code
 -----------------
@@ -64,7 +64,7 @@ dggs          <- dgconstruct(spacing=1000, metric=FALSE, resround='down')
 data(dgquakes)
 
 #Get the corresponding grid cells for each earthquake epicenter (lat-long pair)
-dgquakes$cell <- dgtransform(dggs,dgquakes$lat,dgquakes$lon)
+dgquakes$cell <- dgGEO_to_SEQNUM(dggs, dgquakes$lon, dgquakes$lat)$seqnum
 
 #Get the number of earthquakes in each equally-sized cell
 quakecounts   <- dgquakes %>% group_by(cell) %>% summarise(count=n())
@@ -116,12 +116,12 @@ Credits
 -------
 
 The code in the 'src' directory is based off of
-[DGGRIDv6.2b](http://www.discreteglobalgrids.org) by Kevin Sahr.
+[DGGRIDv6.2b](https://discreteglobal.wpengine.com/) by Kevin Sahr.
 
 However, Richard Barnes has made some significant alterations. These include:
 
 * Replacement of gpclib with clipper, thus making DGGRID into FLOSS software
-  available for both commerical and non-commerical use without restriction
+  available for both commercial and non-commercial use without restriction
 * Restructuring and simplifying all of the makefiles to enable compilation in R
 * Direct inclusion of the shapelib library
 * Addition of the SEQTOPOLY option under the GENERATE_GRID faculty
@@ -139,10 +139,10 @@ Licensing
 
 This package uses the following libraries:
 
- * clipper:  The clipper library has been released under the Boostv1 license by 
+ * clipper:  The clipper library has been released under the Boostv1 license by
              Angus Johnson
 
- * dggrid:   Kevin Sahr has released dggrid as a 
+ * dggrid:   Kevin Sahr has released dggrid as a
              "public domain software program"
 
  * proj4lib: Gerald Evenden has released this code into the public domain. More
@@ -176,4 +176,4 @@ Citing this Package
 
 Please cite this package as:
 
- > Richard Barnes (2017). dggridR: Discrete Global Grids for R. R package version 2.0.4. "https://github.com/r-barnes/dggridR/" doi:10.5281/zenodo.1322866
+ > Richard Barnes and Kevin Sahr (2017). dggridR: Discrete Global Grids for R. R package version 2.0.4. "https://github.com/r-barnes/dggridR/" doi:10.5281/zenodo.1322866

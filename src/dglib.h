@@ -1,9 +1,6 @@
 #ifndef _dglib_hpp_
 #define _dglib_hpp_
 
-#include <memory>
-#include <cstdint>
-
 #include "DgConstants.h"
 #include "dggrid.h"
 //#include "DgProjGnomonicRF.h"
@@ -19,6 +16,10 @@
 #include "DgGeoProjConverter.h"
 #include "DgIDGGS.h"
 
+#include <cstdint>
+#include <memory>
+#include <string>
+
 namespace dglib {
 
   const std::string TOPO_HEXAGON  = "HEXAGON";
@@ -27,26 +28,27 @@ namespace dglib {
   const std::string PROJ_ISEA     = "ISEA";
   const std::string PROJ_FULLER   = "FULLER";
 
-  class DgParams {
-   public:
+  struct DgParams {
     long double  pole_lon_deg;
     long double  pole_lat_deg;
     long double  azimuth_deg;
     unsigned int aperture;
     int          res;
-    std::string  topology = "cheese";    //"HEXAGON", "DIAMOND", "TRIANGLE"
+    std::string  topology = "BAD_TOPOLOGY"; //"HEXAGON", "DIAMOND", "TRIANGLE"
     std::string  projection;  //ISEA/FULLER
   };
 
   class GridThing {
    private:
-    std::unique_ptr<const DgIDGGS> idggs;
+    // std::unique_ptr<const DgIDGGS> idggs;
     int myres;
    protected:
-    DgRFNetwork   net0;
-    DgGeoSphRF    geoRF;
-    DgIDGG        dgg;
-    DgGeoSphDegRF deg;
+    DgRFNetwork net0;
+    const DgGeoSphRF *const geoRF;
+    const DgIDGGSBase *const idggs;
+    const DgIDGGBase& dgg;
+    const DgGeoSphDegRF *const deg;
+    DgParams *ted;
    public:
     GridThing (const DgParams &dp);
     GridThing (
@@ -58,15 +60,15 @@ namespace dglib {
       std::string  topology,   //"HEXAGON", "DIAMOND", "TRIANGLE"
       std::string  projection  //ISEA/FULLER
     );
-    void init (
-      long double  pole_lon_deg,
-      long double  pole_lat_deg,
-      long double  azimuth_deg,
-      unsigned int aperture,
-      int          res,
-      std::string  topology,   //"HEXAGON", "DIAMOND", "TRIANGLE"
-      std::string  projection  //ISEA/FULLER
-    );
+    // void init (
+    //   long double  pole_lon_deg,
+    //   long double  pole_lat_deg,
+    //   long double  azimuth_deg,
+    //   unsigned int aperture,
+    //   int          res,
+    //   std::string  topology,   //"HEXAGON", "DIAMOND", "TRIANGLE"
+    //   std::string  projection  //ISEA/FULLER
+    // );
     double nCells() const;
     double cellAreaKM() const;
     double cellDistKM() const;
@@ -124,7 +126,7 @@ namespace dglib {
     );
 
     bool good() const;
-    uint64_t operator()(std::vector<long double> &x, std::vector<long double> &y); 
+    uint64_t operator()(std::vector<long double> &x, std::vector<long double> &y);
   };
 
   class SeqNumGridGenerator : public GridThing {
@@ -149,7 +151,7 @@ namespace dglib {
     );
 
     bool good() const;
-    uint64_t operator()(std::vector<long double> &x, std::vector<long double> &y); 
+    uint64_t operator()(std::vector<long double> &x, std::vector<long double> &y);
   };
 
 }
