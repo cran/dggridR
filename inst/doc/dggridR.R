@@ -1,6 +1,7 @@
-## ---- fig.width=5, fig.height=5, results='hide', warning=FALSE, error=FALSE, message=FALSE, echo=FALSE, fig.align='center'----
+## ----fig.width=5, fig.height=5, results='hide', warning=FALSE, error=FALSE, message=FALSE, echo=FALSE, fig.align='center'----
 # Generate cover picture
 library(dggridR)
+library(sf)
 library(ggplot2)
 
 # Generate grids of various sizes
@@ -12,11 +13,11 @@ countries <- map_data("world")
 
 # Crop generate dgrids to areas of interest
 bounds = st_bbox(c(xmin = -90, xmax = 75, ymin = -90, ymax = 90), crs = st_crs(4326))
-hgrids[[1]] = hgrids[[1]] %>% st_make_valid() %>% st_filter(st_as_sfc(bounds), .predicate=st_within)
+hgrids[[1]] = hgrids[[1]] |> st_make_valid() |> st_filter(st_as_sfc(bounds), .predicate=st_within)
 bounds = st_bbox(c(xmin = 20, xmax = 145, ymin = -90, ymax = 90), crs = st_crs(4326))
-hgrids[[2]] = hgrids[[2]] %>% st_make_valid() %>% st_filter(st_as_sfc(bounds), .predicate=st_within)
+hgrids[[2]] = hgrids[[2]] |> st_make_valid() |> st_filter(st_as_sfc(bounds), .predicate=st_within)
 bounds = st_bbox(c(xmin = 90, xmax = 215, ymin = -90, ymax = 90), crs = st_crs(4326))
-hgrids[[3]] = hgrids[[3]] %>% st_make_valid() %>% st_filter(st_as_sfc(bounds), .predicate=st_within)
+hgrids[[3]] = hgrids[[3]] |> st_make_valid() |> st_filter(st_as_sfc(bounds), .predicate=st_within)
 
 ggplot() +
     geom_polygon(data=countries,  aes(x=long, y=lat, group=group), fill=NA, color="black")   +
@@ -31,10 +32,10 @@ ggplot() +
     theme(axis.text.x=element_blank())+
     theme(axis.text.y=element_blank())
 
-## ---- results='hide', warning=FALSE, error=FALSE, message=FALSE---------------
+## ----results='hide', warning=FALSE, error=FALSE, message=FALSE----------------
 #Include libraries
 library(dggridR)
-library(dplyr)
+library(collapse)
 
 #Construct a global grid with cells approximately 1000 miles across
 dggs          <- dgconstruct(spacing=1000, metric=FALSE, resround='down')
@@ -49,7 +50,7 @@ dgquakes$cell <- dgGEO_to_SEQNUM(dggs,dgquakes$lon,dgquakes$lat)$seqnum
 cellcenters   <- dgSEQNUM_to_GEO(dggs,dgquakes$cell)
 
 #Get the number of earthquakes in each cell
-quakecounts   <- dgquakes %>% group_by(cell) %>% summarise(count=n())
+quakecounts   <- dgquakes |> fcount(cell, name = "count")
 
 #Get the grid cell boundaries for cells which had quakes
 grid          <- dgcellstogrid(dggs,quakecounts$cell)
@@ -60,13 +61,13 @@ grid          <- merge(grid,quakecounts,by.x="seqnum",by.y="cell")
 
 #Make adjustments so the output is more visually interesting
 grid$count    <- log(grid$count)
-cutoff        <- quantile(grid$count,0.9)
-grid          <- grid %>% mutate(count=ifelse(count>cutoff,cutoff,count))
+cutoff        <- fquantile(grid$count, 0.9)
+grid          <- grid |> fmutate(count = ifelse(count>cutoff,cutoff,count))
 
 #Get polygons for each country of the world
 countries <- map_data("world")
 
-## ---- fig.width=6, fig.height=4-----------------------------------------------
+## ----fig.width=6, fig.height=4------------------------------------------------
 #Plot everything on a flat map
 
 # Handle cells that cross 180 degrees
@@ -78,7 +79,7 @@ ggplot() +
     geom_point  (aes(x=cellcenters$lon_deg, y=cellcenters$lat_deg)) +
     scale_fill_gradient(low="blue", high="red")
 
-## ---- fig.width=6, fig.height=6, echo=FALSE, results='hide'-------------------
+## ----fig.width=6, fig.height=6, echo=FALSE, results='hide'--------------------
 #Replot on a spherical projection
 ggplot() +
     geom_polygon(data=countries, aes(x=long, y=lat, group=group), fill=NA, color="black")   +
@@ -93,7 +94,7 @@ ggplot() +
     theme(axis.text.y=element_blank())+
     ggtitle('Your data could look like this')
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  library(sf)
 #  
 #  #Get the grid cell boundaries for the whole Earth using this dggs in a form
@@ -107,10 +108,9 @@ ggplot() +
 #  #Write out the grid
 #  st_write(grid, "quakes_per_cell.kml", layer="quakes", driver="KML")
 
-## ---- results='hide', warning=FALSE, error=FALSE, message=FALSE---------------
+## ----results='hide', warning=FALSE, error=FALSE, message=FALSE----------------
 #Include libraries
 library(dggridR)
-library(dplyr)
 
 N <- 100    #How many cells to sample
 
@@ -144,7 +144,7 @@ df$cell <- dgGEO_to_SEQNUM(dggs,df$lon,df$lat)$seqnum
 #Get the hexes for each of these cells
 gridfilename <- dgcellstogrid(dggs,df$cell)
 
-## ---- fig.width=6, fig.height=4-----------------------------------------------
+## ----fig.width=6, fig.height=4------------------------------------------------
 #Get the grid in a more convenient format
 grid <- dgcellstogrid(dggs,df$cell)
 grid <- st_wrap_dateline(grid, options = c("WRAPDATELINE=YES","DATELINEOFFSET=180"), quiet = TRUE)
@@ -158,10 +158,9 @@ p <- ggplot() +
     geom_sf(data=grid, fill=alpha("green", alpha=0.4), color=alpha("white", alpha=0.4))
 p
 
-## ---- results='hide', warning=FALSE, error=FALSE, message=FALSE---------------
+## ----results='hide', warning=FALSE, error=FALSE, message=FALSE----------------
 #Include libraries
 library(dggridR)
-library(dplyr)
 
 N <- 100    #How many cells to sample
 
@@ -182,7 +181,7 @@ maxcell <- dgmaxcell(dggs)                     #Get maximum cell id
 cells   <- sample(1:maxcell, N, replace=FALSE) #Choose random cells
 grid    <- dgcellstogrid(dggs,cells)           #Get grid
 
-## ---- fig.width=6, fig.height=4-----------------------------------------------
+## ----fig.width=6, fig.height=4------------------------------------------------
 #Get the grid in a more convenient format
 grid <- dgcellstogrid(dggs,df$cell)
 grid <- st_wrap_dateline(grid, options = c("WRAPDATELINE=YES","DATELINEOFFSET=180"), quiet = TRUE)
@@ -196,14 +195,14 @@ p <- ggplot() +
     geom_sf(data=grid, fill=alpha("green", 0.4), color=alpha("white", 0.4))
 p
 
-## ---- results='hide', warning=FALSE, error=FALSE, message=FALSE---------------
+## ----results='hide', warning=FALSE, error=FALSE, message=FALSE----------------
 library(dggridR)
 #Generate a global grid whose cells are ~100,000 miles^2
 dggs         <- dgconstruct(area=100000, metric=FALSE, resround='nearest')
 #Save the cells to a KML file for use in other software
 gridfilename <- dgearthgrid(dggs,savegrid=tempfile())
 
-## ---- results='hide', warning=FALSE, error=FALSE, message=FALSE, fig.align='center', fig.width=5, fig.height=5----
+## ----results='hide', warning=FALSE, error=FALSE, message=FALSE, fig.align='center', fig.width=5, fig.height=5----
 library(dggridR)
 
 #Generate a dggs specifying an intercell spacing of ~25 miles
@@ -222,7 +221,7 @@ p <- ggplot() +
     geom_sf(data=sa_grid, fill=alpha("blue", 0.4), color=alpha("white", 0.4))
 p
 
-## ---- results='hide', warning=FALSE, error=FALSE, message=FALSE, fig.align='center', fig.width=6, fig.height=4, echo=FALSE----
+## ----results='hide', warning=FALSE, error=FALSE, message=FALSE, fig.align='center', fig.width=6, fig.height=4, echo=FALSE----
 
 lat <- c(90,-90,26.57,-26.57,26.57,-26.57,26.57,-26.57,26.57,-26.57,26.57,-26.57)
 lon <- c(0,0,0,36,72,108,144,180,216,252,288,324)
