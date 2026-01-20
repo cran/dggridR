@@ -95,18 +95,18 @@ ggplot() +
     ggtitle('Your data could look like this')
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  library(sf)
-#  
-#  #Get the grid cell boundaries for the whole Earth using this dggs in a form
-#  #suitable for printing to a KML file
-#  grid <- dgearthgrid(dggs)
-#  
-#  #Update the grid cells' properties to include the number of earthquakes
-#  #in each cell
-#  grid$count <- merge(grid, quakecounts, by.x="seqnum", by.y="cell", all.x=TRUE)
-#  
-#  #Write out the grid
-#  st_write(grid, "quakes_per_cell.kml", layer="quakes", driver="KML")
+# library(sf)
+# 
+# #Get the grid cell boundaries for the whole Earth using this dggs in a form
+# #suitable for printing to a KML file
+# grid <- dgearthgrid(dggs)
+# 
+# #Update the grid cells' properties to include the number of earthquakes
+# #in each cell
+# grid$count <- merge(grid, quakecounts, by.x="seqnum", by.y="cell", all.x=TRUE)
+# 
+# #Write out the grid
+# st_write(grid, "quakes_per_cell.kml", layer="quakes", driver="KML")
 
 ## ----results='hide', warning=FALSE, error=FALSE, message=FALSE----------------
 #Include libraries
